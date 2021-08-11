@@ -19,12 +19,13 @@ Version 1.0
    [x] rewrite all the texts
    [x] recheck all the links
 [x] finish the portfolio / recent work I've done
-[] cleanup all the API keys and so forth and store everything in the .env files / config files
+[x] cleanup all the API keys and so forth and store everything in the .env files / config files
 
 Version 1.1
 Create a more social sharable blog with extended features and respect the users settings more regarding
 reduced motion and light / dark mode.
 
+[] add the social images for og tags and twitter tags
 [] Social sharing features for Twitter, Reddit and other stuff
 [] add the json schema for structured data
 [] respect the users preference of reduced motion
