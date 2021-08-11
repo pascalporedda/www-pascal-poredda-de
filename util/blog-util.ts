@@ -21,7 +21,7 @@ export function getPostSlugs(directory: string): string[] {
   const dirEntries = fs.readdirSync(directory, { withFileTypes: true });
 
   return dirEntries
-    .filter((dirent) => dirent.isFile())
+    .filter((dirent) => dirent.isFile() && dirent.name.indexOf('.md') !== -1)
     .map((dirent) => dirent.name);
 }
 
