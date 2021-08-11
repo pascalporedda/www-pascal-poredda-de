@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind typography;
+@tailwind forms;
+@tailwind interactivity;
+
+
+body {
+  scroll-behavior: smooth;
+  @apply dark:bg-black dark:text-white text-gray-900 bg-white;
+}
+
+body ::-webkit-scrollbar,
+html ::-webkit-scrollbar {
+  width: 6px;
+}
+
+body ::-webkit-scrollbar-thumb,
+html ::-webkit-scrollbar-thumb {
+  background: var(--color-accent-green, #1db954);
+}
+
+body ::-webkit-scrollbar-track,
+html ::-webkit-scrollbar-track {
+  background: var(--color-gray-800, #444444);
+}
+
+body ::selection,
+html ::selection {
+  color: var(--color-white, #ffffff);
+  background-color: var(--color-accent-green, #1db954);
+}
+
+@layer utilities {
+  .scrollbar-none::-webkit-scrollbar {
+    width: 0;
+  }
+
+  @variants responsive {
+    .bg-gradient-half-half {
+      background: linear-gradient(to right, var(--color-black) 0%, var(--color-black) 50%, var(--color-gray-100) 50%, var(--color-gray-100) 100%);
+    }
+
+  }
+
+  @variants hover {
+    .bg-gradient-instagram {
+      background: radial-gradient(
+          circle at 30% 107%,
+          #fdf497 0%,
+          #fdf497 5%,
+          #fd5949 45%,
+          #d6249f 60%,
+          #285aeb 90%
+      );
+    }
+  }
+}
+
+.formatted-text {
+  @apply leading-relaxed;
+}
+
+.formatted-text p,
+.formatted-text ul,
+.formatted-text ol,
+.formatted-text h1,
+.formatted-text h2,
+.formatted-text h3,
+.formatted-text h4,
+.formatted-text h5,
+.formatted-text h6,
+.formatted-text blockquote {
+  @apply mb-8;
+}
+
+.privacy-notice.formatted-text p,
+.privacy-notice.formatted-text ul,
+.privacy-notice.formatted-text ol,
+.privacy-notice.formatted-text h1,
+.privacy-notice.formatted-text h2,
+.privacy-notice.formatted-text h3,
+.privacy-notice.formatted-text h4,
+.privacy-notice.formatted-text h5,
+.privacy-notice.formatted-text h6 {
+  @apply mb-4;
+}
+
+.formatted-text ul {
+  @apply list-disc list-inside;
+}
+
+.formatted-text ol {
+  @apply list-decimal list-inside;
+}
+
+.formatted-text ul,
+.formatted-text ol {
+  @apply pl-4;
+}
+
+.formatted-text h1 {
+  @apply text-3xl font-extrabold;
+}
+
+.formatted-text h2 {
+  @apply text-2xl font-extrabold;
+}
+
+.formatted-text h3,
+.formatted-text h4,
+.formatted-text h5,
+.formatted-text h6 {
+  @apply text-xl font-extrabold;
+}
+
+.formatted-text p {
+}
+
+.formatted-text a {
+  @apply text-accent-green cursor-pointer hover:underline;
+}
