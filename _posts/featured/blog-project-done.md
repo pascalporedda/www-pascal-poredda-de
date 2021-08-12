@@ -1,0 +1,97 @@
+---
+title: 'Project Blog: done!'
+excerpt: 'The Blog is done. I fully reworked my old static website and rebuild it from the ground up with NextJS. 1. It took way longer than I expected 2. I learned a lot 3. I build a great foundation for the future 4. NextJS is awesome'
+topic: 'Technology'
+tags: 'NextJS, React, Blog'
+publishedDate: '2021-08-10T15:00:00Z'
+author: 'Pascal Poredda'
+socialShareImage:
+    url: 'https://pascal-poredda.de/images/social/main-og-image.png'
+    altText: ''
+    height: 720
+    width: 1280
+---
+
+## Choosing a foundation: NextJS
+
+David one of my former colleagues is currently working on a platform, that is dedicated to building static sites. It is based on a lot of UNIX tooling, like file operations, the shell, and programs like `cat`, `grep` and `make`. I was considering using his built system for this blog, but I decided against it as I wanted to try NextJS for my website.
+
+I have been experimenting with NextJS quite a bit before, but now I have taken it to production! Yeah!
+
+From now on, I will build more sites with NextJS since it is so easy to work with: SEO, performance, developer experience, everything is just working. And it is blazingly fast! As you might have noticed: Navigating through the website is instantaneous, SEO scoring is at 100. And the best about it: Without all the hassle you will get when working with React Helmet.
+
+Sure there are a lot of things to solve and improve on. The list of todos is long, but as a first draft, it is a great starting point.
+
+## Getting things done
+
+As software developers we often tend to include more and more features into our projects, this leads to never-ending projects that will never be considered "done". If something is not considered "done" it is not getting published and will never see the light of production. If I count those projects that never made it to production due to the consistent "adding more features" I would need more pairs of hands.
+
+During my development period, I came across two blog posts:
+
+- [TODO Apps are meant for robots](https://blog.frantic.im/all/todo-apps-are-meant-for-robots/)
+- [TODO file for personal projects](https://blog.frantic.im/all/todo-file-for-personal-projects/)
+
+Both were written by Alex Kotliarsky. I found those blog posts via [Hackernews](https://news.ycombinator.com) and they just came in the right time. I was struggling with getting things done, adding more and more todos to my list, and felt overwhelmed.
+
+After reading those posts I decided to throw everything aboard and create a simple markdown file called TODO and wrote down what MUST be shipped in the first version. I achieved that by writing some prose about what the website has to offer and created simple tick boxes from that.
+
+### Ticking of tasks that don't fade away
+
+Usually in classical todo apps once you checked off a task: It fades away. I don't like that. I feel like once it's out of sight, it is as nothing has been achieved. Another box ticked off gone away.
+With the new approach of creating and staying within a markdown file, you can always see what has been ticked off and what has been achieved.
+
+Such a great feeling! This system helped me get this first version out to production.
+
+## Deploying via Vercel
+If you want to take your NextJS website to production, you will find out that there are several options to deploy a NextJS website:
+
+1. Docker
+2. a custom Node server
+3. or Vercel
+
+Vercel is a deployment platform that not only allows you to deploy NextJS applications, but also any other type of application. Deploying an application is done in 3 easy steps and takes less than 5 minutes usually. You can connect your GitHub repository (public or *private*), configure your environment variables and settings, hit deploy, and Vercel starts doing his thing.
+
+### Connecting your custom domain to Vercel
+You can either:
+
+- use Vercels included subdomains
+- buy a new .TLD from Vercel
+- or connect any existing domain via A-Records or nameserver configurations.
+ 
+Depending on your choice this can just take a few seconds to a few minutes. I am using an already existing domain that I just connected to Vercel.
+I can recommend using Vercel as your deployment platform.
+
+## Using React + Tailwind.CSS = ❤️
+
+During my day-to-day job, I have to use [Angular](https://angular.io), another JS framework developed by Google. For any kind of enterprise application, this might be the right choice, especially if you are running several domain teams and every team can just follow the conventions made up by Angular. For my private projects, I tend to use other Frameworks: [React](https://reactjs.org)., [VueJS](https://vuejs.org) or no framework at all since those are:
+
+1. Faster
+2. Easier to use
+ 
+I have worked professionally with all of them for years and my clear preference is React. For the UI I previously relied on Material UI or Bootstrap, this time I wanted to create something different.
+Therefore I went with [Tailwind.CSS](https://tailwindcss.com), a utility CSS framework.
+
+Creating new components with React + Tailwind is just amazing. I feel like it's never been easier. There are a lot of different approaches like using styled-components for example, but I just personally never really enjoyed that approach.
+Before this website, I have used CSS modules per component, but now with Tailwind, there is no need for a lot of custom CSS anymore. Anything that
+
+## Things always take longer than expected
+
+I have built this from the ground up, there are several "starter kits" out there that do provide some basic functionality like reading markdown files for example. And I used one of them, but still, everything took way longer than I expected. I roughly invested *50 hours* over the last few weeks just working on this website and getting it to a stage where I was happy.
+
+I learned a lot during that phase of development as I had to also come back to a lot of the basics like:
+
+- Accessibility
+- SEO optimizations
+- Writing about myself
+- GDPR and legal stuff
+- Getting familiar with Tailwind and more confident with React hooks
+
+So one takeaway is: Stuff always takes longer than expected. There are so many things to be considered, but once you get more fluent with that sort of stuff you will speed up.
+
+
+### Learnings
+- Step away from classical todo apps and switch to per project TODO files
+- NextJS can be used for static and dynamic websites and it's ablaze working with it
+- React + Tailwind will be my future stack
+- I like to build stuff from the ground up, but it does take a lot of time
+- SEO isn't that hard. Is it?
