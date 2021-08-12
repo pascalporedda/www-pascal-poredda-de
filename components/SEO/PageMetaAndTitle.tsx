@@ -43,6 +43,23 @@ const PageMetaAndTitle: React.FC<{ metaData?: PageMetaData }> = ({
       {author && <meta name='author' content={author} />}
       {copyright && <meta name='copyright' content={copyright} />}
       {robots && <meta name='robots' content={robots} />}
+      <link
+        rel='apple-touch-icon'
+        sizes='180x180'
+        href='/apple-touch-icon.png'
+      />
+      <link
+        rel='icon'
+        type='image/png'
+        sizes='32x32'
+        href='/favicon-32x32.png'
+      />
+      <link
+        rel='icon'
+        type='image/png'
+        sizes='16x16'
+        href='/favicon-16x16.png'
+      />
       <meta charSet={charset || 'utf-8'} />
       <meta
         httpEquiv='Content-Type'

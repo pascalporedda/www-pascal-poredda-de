@@ -10,8 +10,9 @@ import { faFolder } from '@fortawesome/free-regular-svg-icons';
 import { faGithubAlt } from '@fortawesome/free-brands-svg-icons';
 import { PrivacyMenu } from '../components/Ui/PrivacyMenu';
 import PageMetaAndTitle from '../components/SEO/PageMetaAndTitle';
-import { withSeoDefaults } from '../util/seo-util';
+import { withSeoDefaults, withUrls } from '../util/seo-util';
 import * as config from '../util/config';
+import { useRouter } from 'next/router';
 
 type Job = {
   title: string;
@@ -148,10 +149,14 @@ export const featuredProjects: Project[] = [
 ];
 
 export default function Portfolio() {
-  const metaData = withSeoDefaults({
-    title: 'Portfolio - ' + config.name,
-    ogTitle: 'Portfolio - ' + config.name,
-  });
+  const router = useRouter();
+  const metaData = withUrls(
+    withSeoDefaults({
+      title: 'Portfolio - ' + config.name,
+      ogTitle: 'Portfolio - ' + config.name,
+    }),
+    router.pathname,
+  );
   return (
     <>
       <PageMetaAndTitle metaData={metaData} />
