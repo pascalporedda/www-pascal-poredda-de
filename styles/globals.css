@@ -59,7 +59,7 @@ html ::selection {
 }
 
 .formatted-text {
-  @apply leading-relaxed;
+  @apply leading-relaxed text-lg;
 }
 
 .formatted-text p,
