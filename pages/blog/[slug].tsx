@@ -41,7 +41,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     };
   }
 
-  const post = getPostBySlug<BlogPost>(params.slug, [
+  const post = getPostBySlug(params.slug, [
     'title',
     'publishedDate',
     'slug',
@@ -50,6 +50,9 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     'socialShareImage',
     'coverImage',
     'excerpt',
+    'tags',
+    'lastModifiedDate',
+    'topic',
   ]);
 
   const content = await markdownToHtml(post.content || '');
@@ -136,16 +139,28 @@ export default function Post({
             <header className={'col-start-2 leading-relaxed'}>
               <h1 className={'text-2xl font-extrabold mb-2'}>{post.title}</h1>
               {post.publishedDate && (
-                <p className={'text-gray-850 dark:text-gray-700 mb-8'}>
-                  Published{' '}
-                  {format(
-                    new Date(Date.parse(post.publishedDate)),
-                    'MMMM d, yyyy',
+                <>
+                  <p className={'text-gray-850 dark:text-gray-700'}>
+                    Published on{' '}
+                    {format(
+                      new Date(Date.parse(post.publishedDate)),
+                      'MMMM d, yyyy',
+                    )}
+                    ,
+                    {post.author && <span>&nbsp;written by {post.author}</span>}
+                  </p>
+                  {post.lastModifiedDate && (
+                    <p className={'text-gray-700 dark:text-gray'}>
+                      Last update:{' '}
+                      {format(
+                        new Date(Date.parse(post.publishedDate)),
+                        'MMMM d, yyyy',
+                      )}
+                    </p>
                   )}
-                  ,{post.author && <span>&nbsp;written by {post.author}</span>}
-                </p>
+                </>
               )}
-              <h2 className={'text-xl font-extrabold'}>tl;dr</h2>
+              <h2 className={'text-xl font-extrabold pt-8'}>tl;dr</h2>
               <p className={'mb-8'}>{post.excerpt}</p>
             </header>
             {tableOfContents && (

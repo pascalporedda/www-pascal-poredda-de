@@ -11,7 +11,7 @@ import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import cs from 'classnames';
 import { InferGetStaticPropsType } from 'next';
 import DateFormatter from '../../components/Blog/DateFormatter';
-import { BlogPost, PageMetaData } from '../../types';
+import { PageMetaData } from '../../types';
 import PageMetaAndTitle from '../../components/SEO/PageMetaAndTitle';
 import { withSeoDefaults, withUrls } from '../../util/seo-util';
 import { useRouter } from 'next/router';
@@ -142,13 +142,15 @@ export default function Index({
 Index.getLayout = withBlogLayout;
 
 export async function getStaticProps() {
-  const posts = getAllPosts<BlogPost>([
+  const posts = getAllPosts([
     'title',
     'publishedDate',
     'slug',
     'author',
-    'coverImage',
     'excerpt',
+    'topic',
+    'lastModifiedDate',
+    'tags',
   ]);
 
   return {

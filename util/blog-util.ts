@@ -2,12 +2,7 @@ import fs from 'fs';
 import { join } from 'path';
 import matter from 'gray-matter';
 import { parse } from 'node-html-parser';
-import {
-  BlogPost,
-  DictKeysExtended,
-  TableOfContentsItems,
-  UniversalDict,
-} from '../types';
+import { BlogPost, DictKeysExtended, TableOfContentsItems } from '../types';
 
 export const postsDirectory = join(process.cwd(), '_posts');
 export const featuredDirectory = join(process.cwd(), '_posts/featured');
@@ -25,10 +20,10 @@ export function getPostSlugs(directory: string): string[] {
     .map((dirent) => dirent.name);
 }
 
-export function getPostBySlug<TPostData extends BlogPost>(
+export function getPostBySlug(
   slug: string,
-  fields: DictKeysExtended<TPostData>,
-): TPostData {
+  fields: DictKeysExtended<BlogPost>,
+): BlogPost {
   const realSlug = slug.replace(/\.md$/, '');
   const fileName = `${realSlug}.md`;
   let fullPath = join(postsDirectory, fileName);
@@ -38,31 +33,40 @@ export function getPostBySlug<TPostData extends BlogPost>(
   const fileContents = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(fileContents);
 
-  const items = {} as UniversalDict;
+  const blogPost = {} as BlogPost;
 
   fields.forEach((field) => {
     if (field === 'slug') {
-      items[field] = realSlug;
+      blogPost[field] = realSlug;
     }
     if (field === 'content') {
-      items[field] = content;
+      blogPost[field] = content;
     }
 
     if (data[field]) {
-      items[field] = data[field];
+      blogPost[field] = data[field];
+    }
+
+    if (field === 'tags' && data[field]) {
+      const tags = data[field];
+      if (typeof tags === 'string') {
+        blogPost[field] = tags.split(',').map((tag) => tag.trim());
+      } else if (Array.isArray(tags)) {
+        blogPost[field] = tags;
+      }
     }
   });
 
-  return items as TPostData;
+  return blogPost as BlogPost;
 }
 
-function processAndSortPosts<TPostData extends BlogPost>(
+function processAndSortPosts(
   posts: string[],
-  fieldsToProcess: DictKeysExtended<TPostData>,
+  fieldsToProcess: DictKeysExtended<BlogPost>,
 ) {
   return (
     posts
-      .map((slug) => getPostBySlug<TPostData>(slug, fieldsToProcess))
+      .map((slug) => getPostBySlug(slug, fieldsToProcess))
       // sort posts by date in descending order
       .sort((post1, post2) =>
         post1.publishedDate > post2.publishedDate ? -1 : 1,
@@ -70,11 +74,9 @@ function processAndSortPosts<TPostData extends BlogPost>(
   );
 }
 
-export function getAllPosts<TPostData extends BlogPost>(
-  fields: DictKeysExtended<TPostData>,
-): {
-  featuredPosts: TPostData[];
-  unfeaturedPosts: TPostData[];
+export function getAllPosts(fields: DictKeysExtended<BlogPost>): {
+  featuredPosts: BlogPost[];
+  unfeaturedPosts: BlogPost[];
 } {
   const unfeaturedPosts = getPostSlugs(postsDirectory);
   const featuredPosts = getPostSlugs(featuredDirectory);
