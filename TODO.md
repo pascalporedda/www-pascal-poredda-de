@@ -25,7 +25,7 @@ Version 1.1
 Create a more social sharable blog with extended features and respect the users settings more regarding
 reduced motion and light / dark mode.
 
-[] add the social images for og tags and twitter tags
+[x] add the social images for og tags and twitter tags
 [] Social sharing features for Twitter, Reddit and other stuff
 [] add the json schema for structured data
 [] respect the users preference of reduced motion
