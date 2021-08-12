@@ -30,7 +30,6 @@ const SectionTitle: React.FC<
       className.push('text-right');
       break;
     case 'center':
-    default:
       className.push('text-center');
   }
 

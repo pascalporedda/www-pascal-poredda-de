@@ -190,7 +190,7 @@ export default function Portfolio() {
           );
         })}
         <div className='text-white bg-black px-8 py-16'>
-          <SectionTitle className={'mb-8'} size={'lg'}>
+          <SectionTitle className={'mb-8'} textPosition={'center'} size={'lg'}>
             02. Featured projects
           </SectionTitle>
           {featuredProjects.map((featuredProject, index) => {
@@ -204,9 +204,11 @@ export default function Portfolio() {
           })}
         </div>
         <div className='relative 2xl:bg-gradient-half-half xl: p-8'>
-          <SectionTitle size={'lg'} className={'mb-8'} textPosition={'right'}>
-            03. Other things I have worked on
-          </SectionTitle>
+          <div className='text-center lg:text-right'>
+            <SectionTitle size={'lg'} className={'mb-8'}>
+              03. Other things I have worked on
+            </SectionTitle>
+          </div>
           <div className='grid grid-flow-row grid-cols-1 lg:grid-cols-3 max-w-6xl mx-auto gap-8 mb-8'>
             {otherProjects.map((project) => (
               <OtherProject project={project} key={project.title} />
@@ -303,10 +305,10 @@ function FeaturedProject({
         <div
           className={cs(
             {
-              'right-0 lg:text-right': orientation === 'left',
-              'left-0 lg:text-left': orientation === 'right',
+              'right-0 lg:text-right lg:items-end': orientation === 'left',
+              'left-0 lg:text-left lg:items-start': orientation === 'right',
             },
-            'flex lg:absolute items-center lg:items-start text-center top-0 flex-col max-w-3xl lg:ml-auto',
+            'flex lg:absolute items-center text-center top-0 flex-col max-w-3xl lg:ml-auto',
           )}>
           <p className={'text-xl'}>Featured Project</p>
           <h2 className={'text-3xl font-extrabold mb-8'}>{project.title}</h2>
