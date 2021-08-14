@@ -40,7 +40,7 @@ const BlogLayout: React.FC<React.PropsWithChildren<ReactCookieProps>> = ({
         className='sr-only focus:absolute focus:bg-accent-green focus:p-2 focus:text-white focus:not-sr-only'>
         Skip to content
       </a>
-      <div className={'max-w-3xl mx-auto'}>
+      <div className={'max-w-4xl mx-auto'}>
         <nav className={'flex flex-row py-4 lg:px-0 px-8'}>
           <Link passHref href={'/blog'}>
             <a

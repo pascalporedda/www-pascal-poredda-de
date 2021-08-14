@@ -134,8 +134,7 @@ export default function Post({
       ) : (
         <>
           <PageMetaAndTitle metaData={metaData} />
-          <article
-            className={'mx-auto py-16 max-w-3xl grid grid-cols-post gap-4'}>
+          <article className={'mx-auto py-16 grid grid-cols-post gap-4'}>
             <header className={'col-start-2 leading-relaxed'}>
               <h1 className={'text-2xl font-extrabold mb-2'}>{post.title}</h1>
               {post.publishedDate && (
