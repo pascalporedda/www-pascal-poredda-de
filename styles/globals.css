@@ -59,7 +59,11 @@ html ::selection {
 }
 
 .formatted-text {
-  @apply leading-relaxed text-lg;
+  @apply leading-relaxed text-lg overflow-hidden;
+}
+
+.formatted-text .remark-highlight {
+  @apply overflow-auto;
 }
 
 .formatted-text p,
