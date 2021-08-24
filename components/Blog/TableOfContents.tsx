@@ -13,7 +13,7 @@ const TableOfContents: React.FC<React.PropsWithChildren<TableOfContentsProps>> =
     }, []);
 
     return (
-      <aside className={'relative flex flex-col text-sm'}>
+      <aside className={'relative hidden lg:flex flex-col text-sm'}>
         <div className='sticky top-12'>
           <h2
             className={

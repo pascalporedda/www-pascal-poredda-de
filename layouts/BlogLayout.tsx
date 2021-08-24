@@ -41,10 +41,12 @@ const BlogLayout: React.FC<React.PropsWithChildren<ReactCookieProps>> = ({
         Skip to content
       </a>
       <div className={'max-w-4xl mx-auto'}>
-        <nav className={'flex flex-row py-4 lg:px-0 px-8'}>
+        <nav className={'flex flex-row flex-wrap py-4 lg:px-0 px-8'}>
           <Link passHref href={'/blog'}>
             <a
-              className={'block rounded-full filter drop-shadow-xl'}
+              className={
+                'block mx-auto sm:mx-0 mb-3 sm:mb-0 flex-shrink-0 rounded-full filter drop-shadow-xl'
+              }
               title={'To the blogs main page'}>
               <Image
                 src={'/sidebar-logo.jpg'}
@@ -55,7 +57,7 @@ const BlogLayout: React.FC<React.PropsWithChildren<ReactCookieProps>> = ({
               />
             </a>
           </Link>
-          <div className='flex items-center dark:text-white text-dark font-extrabold text-lg ml-auto space-x-8'>
+          <div className='flex items-center dark:text-white text-dark font-extrabold text-lg mx-auto sm:mr-0 sm:ml-auto space-x-8'>
             <Link passHref={true} href={'/blog'}>
               <a title={'Visit the blog home page'}>blog</a>
             </Link>
