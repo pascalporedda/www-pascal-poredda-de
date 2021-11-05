@@ -37,7 +37,7 @@ function Home({ socialMediaPosts }: { socialMediaPosts: SocialFeedPost[] }) {
           href={'https://thenextgen.de'}
           className={'text-accent-green underline'}
           title={'TheNextGen: Ahead of the usual'}>
-          rola Security Solutions GmbH
+          The NextGen GmbH
         </a>{' '}
         as a Senior Software Engineer and IT consultant where I do work a lot
         with{' '}
