@@ -23,9 +23,20 @@ type Job = {
 };
 export const jobs: Job[] = [
   {
+    title: 'Software Engineer & Consultant',
+    company: 'The NextGen GmbH',
+    dateRange: '2021 - Today',
+    companyWebsite: 'https://thenextgen.de',
+    bullets: [
+      'Driving change in multiple projects as a Midlancer',
+      'Helping companies transform their industry by developing next level software applications',
+      'Consulting companies regarding cloud environments and architecture',
+    ],
+  },
+  {
     title: 'Frontend Developer',
     company: 'rola Security Solutions GmbH',
-    dateRange: 'June 2020 - Today',
+    dateRange: 'June 2020 - 2021',
     companyWebsite: 'https://rola.com',
     bullets: [
       'Accompanying the transformation of a Java Swing client to an Angular enterprise web application.',

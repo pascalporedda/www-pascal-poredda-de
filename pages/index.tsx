@@ -34,12 +34,13 @@ function Home({ socialMediaPosts }: { socialMediaPosts: SocialFeedPost[] }) {
         freelance Front-End Developer I earned my first money. Currently I
         support the{' '}
         <a
-          href={'https://rola.com'}
+          href={'https://thenextgen.de'}
           className={'text-accent-green underline'}
-          title={'rola Security Solutions GmbH'}>
+          title={'TheNextGen: Ahead of the usual'}>
           rola Security Solutions GmbH
         </a>{' '}
-        as a Senior Front-End Developer where I do work a lot with{' '}
+        as a Senior Software Engineer and IT consultant where I do work a lot
+        with{' '}
         <a
           href={'https://angular.io/'}
           className={'text-accent-green underline'}
@@ -60,7 +61,7 @@ function Home({ socialMediaPosts }: { socialMediaPosts: SocialFeedPost[] }) {
           title={'Cypress E2E Testing'}>
           E2E Testing
         </a>{' '}
-        and anything, that is related to it.
+        and cloud solutions, as well as everything related to it.
         <br />
         <br />
         In my free time, I am especially driven by sports, but also by self
