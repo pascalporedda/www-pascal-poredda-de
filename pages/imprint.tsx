@@ -16,9 +16,9 @@ function Imprint() {
       <p>
         Pascal Poredda
         <br />
-        Bertastr. 51
+        Robertstr. 21
         <br />
-        45883 Gelsenkirchen
+        51105 Köln
       </p>
 
       <SectionTitle textPosition={'left'}>Contact</SectionTitle>

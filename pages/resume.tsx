@@ -45,11 +45,18 @@ export default function Resume() {
         'Creating highly scalable ecommerce web applications, with a keen eye for the frontend.',
     },
     {
-      period: '06/2020 - Cur.',
+      period: '06/2020 - 11/2021.',
       establishment: 'rola Security Solutions GmbH',
       title: 'Frontend developer',
       description:
         'Creating applications in a security related field, for the police, the Bundeswehr and the federal office for the protection of the constitution.',
+    },
+    {
+      period: '12/2021 - Cur.',
+      establishment: 'The NextGen GmbH',
+      title: 'Software Engineer & Consultant',
+      description:
+        'Midlancer working for different companies, doing consulting and software development.',
     },
   ];
 
@@ -202,9 +209,9 @@ export default function Resume() {
         Contact
       </SectionTitle>
       <p>
-        Bertastr. 51,
+        Robertstr. 21,
         <br />
-        45883 Gelsenkirchen
+        51105 Köln
         <br />
         Mobile: 0151 / 259 218 83
         <br />
