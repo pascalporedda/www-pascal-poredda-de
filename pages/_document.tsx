@@ -19,6 +19,18 @@ class CustomDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script
+            async
+            defer
+            src='https://scripts.simpleanalyticscdn.com/latest.js'
+          />
+          <noscript>
+            <img
+              src='https://queue.simpleanalyticscdn.com/noscript.gif'
+              alt=''
+              referrerPolicy='no-referrer-when-downgrade'
+            />
+          </noscript>
         </body>
       </Html>
     );
