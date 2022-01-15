@@ -5,6 +5,8 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document';
+import React from 'react';
+import Script from 'next/script';
 
 class CustomDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -19,12 +21,9 @@ class CustomDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script
-            async
-            defer
-            src='https://scripts.simpleanalyticscdn.com/latest.js'
-          />
+          <Script src='https://scripts.simpleanalyticscdn.com/latest.js' />
           <noscript>
+            {/* eslint-disable @next/next/no-img-element */}
             <img
               src='https://queue.simpleanalyticscdn.com/noscript.gif'
               alt=''
