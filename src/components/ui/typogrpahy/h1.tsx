@@ -1,8 +1,13 @@
-import { PropsWithChildren } from "react";
+import { cn } from '@/lib/utils';
+import { TypographyProps } from './typo-props';
 
-export function TypographyH1({ children }: PropsWithChildren) {
+export function TypographyH1({ children, className }: TypographyProps) {
   return (
-    <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+    <h1
+      className={cn(
+        className,
+        'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl',
+      )}>
       {children}
     </h1>
   );

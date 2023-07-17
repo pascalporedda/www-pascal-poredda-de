@@ -1,7 +1,10 @@
-import { PropsWithChildren } from "react";
+import { TypographyProps } from './typo-props';
+import { cn } from '@/lib/utils';
 
-export function TypographyBlockquote({ children }: PropsWithChildren) {
+export function TypographyBlockquote({ children, className }: TypographyProps) {
   return (
-    <blockquote className="mt-6 border-l-2 pl-6 italic">{children}</blockquote>
+    <blockquote className={cn('mt-6 border-l-2 pl-6 italic', className)}>
+      {children}
+    </blockquote>
   );
 }

@@ -1,7 +1,8 @@
-import { PropsWithChildren } from "react";
+import { cn } from '@/lib/utils';
+import { TypographyProps } from './typo-props';
 
-export function TypographyLarge({ children }: PropsWithChildren) {
+export function TypographyLarge({ children, className }: TypographyProps) {
   return (
-    <div className="text-lg font-semibold">{children}</div>
+    <div className={cn(className, 'text-lg font-semibold')}>{children}</div>
   );
 }
