@@ -40,3 +40,7 @@ public/robots.txt
 
 _cache/
 !_cache/.gitkeep
+
+.contentlayer
+
+tsconfig.tsbuildinfo
