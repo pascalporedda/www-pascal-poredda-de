@@ -1,132 +1,78 @@
-/**
- * This is a minimal config.
- *
- * If you need the full config, get it from here:
- * https://unpkg.com/browse/tailwindcss@latest/stubs/defaultConfig.stub.js
- */
-
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  /**
-   * Stylesheet generation mode.
-   *
-   * Set mode to "jit" if you want to generate your styles on-demand as you author your templates;
-   * Set mode to "aot" if you want to generate the stylesheet in advance and purge later (aka legacy mode).
-   */
-  mode: 'jit',
-
-  purge: [
-    './components/**/*.{js,jsx,ts,tsx}',
-    './pages/**/*.{js,jsx,ts,tsx}',
-    './layouts/**/*.{js,jsx,ts,tsx}',
-    './util/**/*.{js,jsx,ts,tsx}',
-  ],
-  darkMode: 'media', // or 'media' or 'class'
+  darkMode: ["class"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
   theme: {
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      white: '#ffffff',
-      black: '#111217',
-      turquoise: {
-        800: '#75e3ea',
-        DEFAULT: '#2ec5ce',
-        100: '#d5fafc',
-      },
-      purple: {
-        800: '#d6b1ff',
-        DEFAULT: '#8c30f5',
-        100: '#f1e4ff',
-      },
-      orange: {
-        DEFAULT: '#fe9a22',
-        800: '#ffc278',
-        100: '#ffe3c1',
-      },
-      pink: {
-        DEFAULT: '#f22bb2',
-        800: '#ff72d2',
-        100: '#ffb1e6',
-      },
-      gray: {
-        900: '#111217',
-        875: '#121212',
-        850: '#222222',
-        800: '#424242',
-        700: '#898c91',
-        DEFAULT: '#d9dbe1',
-        300: '#d9dbe1',
-        200: '#eeeff4',
-        100: '#f4f5f7',
-      },
-      accent: {
-        green: '#1db954',
-        blue: '#c0dae5',
-        peach: '#f39f9f',
-        'light-peach': '#fdd9d9',
-        candy: '#ffc3d8',
-        cyan: '#a0dcff',
-        red: '#ff0000',
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
       },
     },
     extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
       keyframes: {
-        scale: {
-          '0%': { transform: 'scale(0)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
+        "accordion-down": {
+          from: { height: 0 },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: 0 },
         },
       },
       animation: {
-        scale: 'scale 0.25s ease-in-out',
-      },
-      gridTemplateColumns: {
-        post: '14rem 1fr',
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [
-    /**
-     * '@tailwindcss/forms' is the forms plugin that provides a minimal styling
-     * for forms. If you don't like it or have own styling for forms,
-     * comment the line below to disable '@tailwindcss/forms'.
-     */
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/line-clamp'),
-    require('@tailwindcss/aspect-ratio'),
-    function ({ addBase, theme }) {
-      function extractColorVars(colorObj, colorGroup = '') {
-        return Object.keys(colorObj).reduce((vars, colorKey) => {
-          const value = colorObj[colorKey];
+  plugins: [require("tailwindcss-animate"),
 
-          const newVars =
-            typeof value === 'string'
-              ? { [`--color${colorGroup}-${colorKey}`]: value }
-              : extractColorVars(value, `-${colorKey}`);
-
-          return { ...vars, ...newVars };
-        }, {});
-      }
-
-      addBase({
-        ':root': extractColorVars(theme('colors')),
-      });
-    },
-    function ({ addUtilities, addComponents, e, prefix, config }) {
-      const newUtilities = {
-        '.horizontal-tb': {
-          writingMode: 'horizontal-tb',
-        },
-        '.vertical-rl': {
-          writingMode: 'vertical-rl',
-        },
-        '.vertical-lr': {
-          writingMode: 'vertical-lr',
-        },
-      };
-      addUtilities(newUtilities);
-    },
-  ],
-};
+   require('@tailwindcss/typography'),],
+}

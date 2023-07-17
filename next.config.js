@@ -1,18 +1,10 @@
-module.exports = {
+const { withContentlayer } = require('next-contentlayer');
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  swcMinify: true,
   reactStrictMode: true,
-  images: {
-    domains: ['i.ytimg.com'],
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/privacy.html',
-        destination: '/privacy',
-      },
-      {
-        source: '/imprint.html',
-        destination: '/imprint',
-      },
-    ];
-  },
 };
+
+
+module.exports = withContentlayer(nextConfig);
