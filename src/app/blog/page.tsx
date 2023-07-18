@@ -13,7 +13,7 @@ export default async function Blog() {
     <>
       <TypographyH1>read my blog</TypographyH1>
       <section>
-        <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+        <ul className="my-6 ml-6 list-none [&>li]:mt-2">
           {allBlogs.map((post) => (
             <li key={post._id}>
               <Link href={`/blog/${post.slug}`}>{post.title}</Link>
