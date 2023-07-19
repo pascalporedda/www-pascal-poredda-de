@@ -10,6 +10,7 @@ import {
 } from "./ui/navigation-menu";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ModeToggle } from "./dark-mode-toggle";
 
 const navItems = {
   "/": {
@@ -32,6 +33,7 @@ export const PageHeader = () => {
 
   return (
     <NavigationMenu className="py-8">
+      <ModeToggle />
       <NavigationMenuList>
         {Object.entries(navItems).map(([path, { name }]) => (
           <NavigationMenuItem key={path}>
