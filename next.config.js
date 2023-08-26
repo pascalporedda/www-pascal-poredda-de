@@ -4,6 +4,9 @@ const { withContentlayer } = require('next-contentlayer');
 const nextConfig = {
   swcMinify: true,
   reactStrictMode: true,
+  // experimental: {
+  //   serverActions: true,
+  // }
 };
 
 
