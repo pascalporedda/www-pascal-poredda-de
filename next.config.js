@@ -7,6 +7,9 @@ const nextConfig = {
   // experimental: {
   //   serverActions: true,
   // }
+  images: {
+    domains: ['images.unsplash.com', 'pascal-poredda.de'],
+  }
 };
 
 
