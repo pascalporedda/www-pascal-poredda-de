@@ -1,14 +1,11 @@
 import { ImageResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 
-import { Inter } from 'next/font/google';
-
 export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const postTitle = searchParams.get('title');
-  const fontData = await Inter;
 
   return new ImageResponse(
     (
@@ -44,13 +41,6 @@ export async function GET(req: NextRequest) {
     {
       width: 1920,
       height: 1080,
-      fonts: [
-        {
-          name: 'Inter',
-          data: fontData,
-          style: 'normal',
-        },
-      ],
-    }
+    },
   );
 }

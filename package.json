@@ -26,7 +26,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
-    "next": "13.4.10",
+    "next": "13.4.19",
     "next-contentlayer": "0.3.1",
     "next-themes": "^0.2.1",
     "postcss": "8.4.26",
@@ -39,10 +39,11 @@
     "rehype-slug": "^5.1.0",
     "remark-gfm": "^3.0.1",
     "server-only": "^0.0.1",
+    "sharp": "^0.32.5",
     "shiki": "^0.13.0",
     "tailwind-merge": "^1.13.2",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.6",
-    "typescript": "5.1.6"
+    "typescript": "^5.2"
   }
 }
