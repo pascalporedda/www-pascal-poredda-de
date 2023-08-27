@@ -65,9 +65,9 @@ export default async function BlogPage({ params }: any) {
 
   return (
     <section>
-      {/* <script type="application/ld+json"> */}
-      {/*   {JSON.stringify(post.structuredData)} */}
-      {/* </script> */}
+      <script type="application/ld+json">
+        {JSON.stringify(post.structuredData)}
+      </script>
       <TypographyH1 className='max-w-[650px]'>
         <Balancer>{post.title}</Balancer>
       </TypographyH1>
