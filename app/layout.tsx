@@ -26,9 +26,9 @@ export default function RootLayout({
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <div className='relative min-h-screen'>
             <div className='container'>
-              <PageHeader />
-              <main>{children}</main>
+            <PageHeader />
             </div>
+            <main>{children}</main>
           </div>
         </ThemeProvider>
       </body>
