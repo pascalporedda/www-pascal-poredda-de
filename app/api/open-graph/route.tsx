@@ -4,14 +4,14 @@ import { NextRequest } from 'next/server';
 
 export const runtime = 'edge';
 
-export const size = {
+const size = {
   width: 1920,
   height: 1080,
 };
 
-export const alt = 'Social Media Image';
+// export const alt = 'Social Media Image';
 
-export const contentType = 'image/png';
+// const contentType = 'image/png';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
