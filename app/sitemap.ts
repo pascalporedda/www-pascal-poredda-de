@@ -6,12 +6,10 @@ export default async function sitemap() {
     lastModified: post.publishedAt,
   }));
 
-  const routes = ['', '/blog','/tech-stack'].map(
-    (route) => ({
-      url: `https://pascal-poredda.de${route}`,
-      lastModified: new Date().toISOString().split('T')[0],
-    })
-  );
+  const routes = ['', '/blog', '/about'].map((route) => ({
+    url: `https://pascal-poredda.de${route}`,
+    lastModified: new Date().toISOString().split('T')[0],
+  }));
 
   return [...routes, ...blogs];
 }
