@@ -64,7 +64,7 @@ export default async function BlogPage({ params }: any) {
   // const tweets = await getTweets(post.tweetIds);
 
   return (
-    <section>
+    <section className='container'>
       <script type='application/ld+json'>
         {JSON.stringify(post.structuredData)}
       </script>
