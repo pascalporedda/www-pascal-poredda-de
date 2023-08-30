@@ -9,8 +9,7 @@ const nextConfig = {
   // }
   images: {
     domains: ['images.unsplash.com', 'pascal-poredda.de'],
-  }
+  },
 };
-
 
 module.exports = withContentlayer(nextConfig);

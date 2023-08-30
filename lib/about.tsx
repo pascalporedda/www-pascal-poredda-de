@@ -12,8 +12,8 @@ export const name = 'Pascal';
 export const about = () => {
   return (
     <>
-      I love my work coding as much as I love my other hobbies. Always striving and
-      struggling to progress everything at once.
+      I love my work coding as much as I love my other hobbies. Always striving
+      and struggling to progress everything at once.
     </>
   );
 };
