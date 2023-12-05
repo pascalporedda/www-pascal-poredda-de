@@ -1,6 +1,5 @@
-import { fontSans } from '@/lib/fonts';
-import { ImageResponse } from 'next/server';
 import { NextRequest } from 'next/server';
+import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
