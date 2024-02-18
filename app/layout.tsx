@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { cn } from '@/lib/utils';
 import { fontSans } from '@/lib/fonts';
 import { PageHeader } from '@/components/page-header';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://pascal-poredda.de'),
@@ -51,7 +52,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
-          'flex h-full flex-col bg-background antialiased',
+          'flex h-full flex-col bg-background antialiased max-w-2xl mx-auto',
           fontSans.variable,
         )}
       >
@@ -60,10 +61,11 @@ export default function RootLayout({
             <div className='container'>
               <PageHeader />
             </div>
-            <main>{children}</main>
+            <main className='container'>{children}</main>
           </div>
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
