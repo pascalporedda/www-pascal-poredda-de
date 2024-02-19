@@ -52,7 +52,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
-          'flex h-full flex-col bg-background antialiased max-w-2xl mx-auto',
+          'flex h-full flex-col bg-background antialiased mx-auto',
           fontSans.variable,
         )}
       >
@@ -61,7 +61,7 @@ export default function RootLayout({
             <div className='container'>
               <PageHeader />
             </div>
-            <main className='container'>{children}</main>
+            <main>{children}</main>
           </div>
         </ThemeProvider>
         <Analytics />

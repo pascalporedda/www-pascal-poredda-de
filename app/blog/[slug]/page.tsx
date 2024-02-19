@@ -28,7 +28,7 @@ export async function generateMetadata({
   } = post;
   const ogImage = image
     ? `https://pascal-poredda.de${image}`
-    : `https://pascal-poredda.de/api/open-graph?title=${title}`;
+    : `https://pascal-poredda.de/api/open-graph?title=${encodeURIComponent(title)}`;
 
   return {
     title,
@@ -61,13 +61,15 @@ export default async function BlogPage({ params }: any) {
     notFound();
   }
 
+  const structuredData = JSON.stringify(post.structuredData);
+
   // const tweets = await getTweets(post.tweetIds);
 
   return (
     <section className='container'>
-      <script type='application/ld+json'>
-        {JSON.stringify(post.structuredData)}
-      </script>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: structuredData }}></script>
       <TypographyH1 className='max-w-[650px]'>
         <Balancer>{post.title}</Balancer>
       </TypographyH1>

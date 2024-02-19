@@ -1,6 +1,8 @@
 import { TypographyH1 } from '@/components/ui/typogrpahy/h1';
 import { allBlogs } from 'contentlayer/generated';
 import Link from 'next/link';
+import { parse } from 'date-fns';
+import DateFormatter from '@/components/date-formatter';
 
 export const metadata = {
   title: 'Blog',
@@ -9,14 +11,22 @@ export const metadata = {
 };
 
 export default async function Blog() {
+  const entries = allBlogs
+    .map((post) => ({
+      ...post,
+      timestamp: parse(post.publishedAt, 'yyyy-mm-dd', new Date()),
+    }))
+    .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
   return (
     <div className='container'>
       <TypographyH1>read my blog</TypographyH1>
       <section>
         <ul className='my-6 ml-6 list-none [&>li]:mt-2'>
-          {allBlogs.map((post) => (
+          {entries.map((post) => (
             <li key={post._id}>
-              <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+              <Link href={`/blog/${post.slug}`}>
+                <DateFormatter dateString={post.publishedAt} /> - {post.title}
+              </Link>
             </li>
           ))}
         </ul>

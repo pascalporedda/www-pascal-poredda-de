@@ -16,9 +16,9 @@ const navItems = {
   '/': {
     name: 'home',
   },
-  '/about': {
-    name: 'about',
-  },
+  // '/about': {
+  //   name: 'about',
+  // },
   '/blog': {
     name: 'blog',
   },
@@ -42,8 +42,7 @@ export const PageHeader = () => {
                 active={pathname === path}
                 className={cn(navigationMenuTriggerStyle(), {
                   'font-bold': pathname === path,
-                })}
-              >
+                })}>
                 {name}
               </NavigationMenuLink>
             </Link>

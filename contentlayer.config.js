@@ -30,7 +30,7 @@ const computedFields = {
       description: doc.summary,
       image: doc.image
         ? `https://pascal-poredda.de${doc.image}`
-        : `https://pascal-poredda.de/api/open-graph?title=${doc.title}`,
+        : `https://pascal-poredda.de/api/open-graph?title=${encodeURIComponent(doc.title)}`,
       url: `https://pascal-poredda.de/blog/${doc._raw.flattenedPath}`,
       author: {
         '@type': 'Person',
