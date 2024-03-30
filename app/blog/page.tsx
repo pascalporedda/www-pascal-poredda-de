@@ -14,18 +14,23 @@ export default async function Blog() {
   const entries = allBlogs
     .map((post) => ({
       ...post,
-      timestamp: parse(post.publishedAt, 'yyyy-mm-dd', new Date()),
+      timestamp: parse(post.publishedAt, 'yyyy-MM-dd', new Date()),
     }))
     .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
   return (
     <div className='container'>
-      <TypographyH1>read my blog</TypographyH1>
+      <TypographyH1>read one of my occasional blog posts</TypographyH1>
       <section>
         <ul className='my-6 ml-6 list-none [&>li]:mt-2'>
           {entries.map((post) => (
             <li key={post._id}>
               <Link href={`/blog/${post.slug}`}>
-                <DateFormatter dateString={post.publishedAt} /> - {post.title}
+                <DateFormatter
+                  className={'text-gray-400'}
+                  dateString={post.publishedAt}
+                />{' '}
+                - {post.title}
               </Link>
             </li>
           ))}
