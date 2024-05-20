@@ -1,54 +1,40 @@
-'use client';
-
 import Link from 'next/link';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from './ui/navigation-menu';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { ModeToggle } from './dark-mode-toggle';
 
 const navItems = {
   '/': {
     name: 'home',
   },
-  // '/about': {
-  //   name: 'about',
-  // },
+  '/doing': {
+    name: 'doing',
+  },
   '/blog': {
     name: 'blog',
   },
-} as const;
-
-export const PageHeader = () => {
-  let pathname = usePathname() || '/';
-
-  if (pathname.includes('/blog/')) {
-    pathname = '/blog';
-  }
-
-  return (
-    <NavigationMenu className='py-8'>
-      <ModeToggle />
-      <NavigationMenuList>
-        {Object.entries(navItems).map(([path, { name }]) => (
-          <NavigationMenuItem key={path}>
-            <Link href={path} legacyBehavior passHref>
-              <NavigationMenuLink
-                active={pathname === path}
-                className={cn(navigationMenuTriggerStyle(), {
-                  'font-bold': pathname === path,
-                })}>
-                {name}
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        ))}
-      </NavigationMenuList>
-    </NavigationMenu>
-  );
 };
+
+export function Navbar() {
+  return (
+    <aside className='-ml-[8px] mb-8 tracking-tight'>
+      <div className='lg:sticky lg:top-20'>
+        <nav
+          className='flex flex-row items-start relative px-0 pb-0 fade md:overflow-auto scroll-pr-6 md:relative'
+          id='nav'
+        >
+          <div className='flex flex-row space-x-0 pr-10'>
+            {Object.entries(navItems).map(([path, { name }]) => {
+              return (
+                <Link
+                  key={path}
+                  href={path}
+                  className='transition-all hover:text-neutral-800 dark:hover:text-neutral-200 flex align-middle relative py-1 px-2'
+                >
+                  {name}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      </div>
+    </aside>
+  );
+}

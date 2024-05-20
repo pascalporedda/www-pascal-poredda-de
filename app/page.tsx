@@ -10,9 +10,9 @@ import {
 import Link from 'next/link';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
-export default async function Home() {
+export default function Home() {
   return (
-    <div className='container'>
+    <>
       <Card className='max-w-2xl'>
         <CardContent>
           <h1 className='font-bold text-3xl mt-2'>{name} Poredda</h1>
@@ -84,6 +84,6 @@ export default async function Home() {
           </ul>
         </CardFooter>
       </Card>
-    </div>
+    </>
   );
 }

@@ -3,9 +3,12 @@ import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 import type { Metadata } from 'next';
 import { cn } from '@/lib/utils';
-import { fontSans } from '@/lib/fonts';
-import { PageHeader } from '@/components/page-header';
+import { Navbar } from '@/components/page-header';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { cx } from 'class-variance-authority';
+
+import { GeistMono } from 'geist/font/mono';
+import { GeistSans } from 'geist/font/sans';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://pascal-poredda.de'),
@@ -13,11 +16,10 @@ export const metadata: Metadata = {
     default: 'Pascal Poredda',
     template: '%s | Pascal Poredda',
   },
-  description:
-    'Developer, dancer and content creator. I am passionate about software engineering, NeoVim, dancing and climbing as well as personal growth.',
+  description: '',
   openGraph: {
     title: 'Pascal Poredda',
-    description: 'Developer, creator and climber.',
+    description: 'Developer, writer, and creator of things.',
     url: 'https://pascal-poredda.de',
     siteName: 'Pascal Poredda',
     locale: 'en-US',
@@ -49,23 +51,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' suppressHydrationWarning>
-      <body
-        className={cn(
-          'flex h-full flex-col bg-background antialiased mx-auto',
-          fontSans.variable,
-        )}
-      >
+    <html
+      lang='en'
+      className={cx(
+        'text-black bg-white dark:text-white dark:bg-[#111010]',
+        GeistSans.variable,
+        GeistMono.variable,
+      )}
+    >
+      <body className='antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <div className='relative min-h-screen'>
-            <div className='container'>
-              <PageHeader />
-            </div>
-            <main>{children}</main>
-          </div>
+          <main className='flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0'>
+            <Navbar />
+            {children}
+            <Analytics />
+            <SpeedInsights />
+          </main>
         </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

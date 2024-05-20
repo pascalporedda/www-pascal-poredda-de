@@ -1,30 +1,27 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Mdx } from '@/components/mdx';
-import { allBlogs } from 'contentlayer/generated';
+import { MDX } from '@/components/mdx';
 import Balancer from 'react-wrap-balancer';
 import { TypographyH1 } from '@/components/ui/typogrpahy/h1';
-
-export async function generateStaticParams() {
-  return allBlogs.map((post) => ({
-    slug: post.slug,
-  }));
-}
+import { getBlogPosts } from '@/app/db/blog';
 
 export async function generateMetadata({
   params,
 }: any): Promise<Metadata | undefined> {
-  const post = allBlogs.find((post) => post.slug === params.slug);
+  let post = getBlogPosts().find((post) => post.slug === params.slug);
+
   if (!post) {
-    return;
+    return notFound();
   }
 
   const {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
     slug,
+    metadata: {
+      summary: description,
+      title,
+      image,
+      publishedAt: publishedTime,
+    },
   } = post;
   const ogImage = image
     ? `https://pascal-poredda.de${image}`
@@ -55,13 +52,11 @@ export async function generateMetadata({
 }
 
 export default async function BlogPage({ params }: any) {
-  const post = allBlogs.find((post) => post.slug === params.slug);
+  const post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) {
     notFound();
   }
-
-  const structuredData = JSON.stringify(post.structuredData);
 
   // const tweets = await getTweets(post.tweetIds);
 
@@ -69,19 +64,35 @@ export default async function BlogPage({ params }: any) {
     <section className='container'>
       <script
         type='application/ld+json'
-        dangerouslySetInnerHTML={{ __html: structuredData }}></script>
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.metadata.title,
+            datePublished: post.metadata.publishedAt,
+            dateModified: post.metadata.publishedAt,
+            description: post.metadata.summary,
+            image: post.metadata.image
+              ? `https://pascal-poredda.de${post.metadata.image}`
+              : `https://pascal-poredda.de/og?title=${post.metadata.title}`,
+            url: `https://pascal-poredda.de/blog/${post.slug}`,
+            author: {
+              '@type': 'Person',
+              name: 'Pascal Poredda',
+            },
+          }),
+        }}
+      />
       <TypographyH1 className='max-w-[650px]'>
-        <Balancer>{post.title}</Balancer>
+        <Balancer>{post.metadata.title}</Balancer>
       </TypographyH1>
       <div className='grid grid-cols-[auto_1fr_auto] items-center mt-4 mb-8 font-mono text-sm max-w-[650px]'>
         <div className='bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter'>
-          {post.publishedAt}
+          {post.metadata.publishedAt}
         </div>
         <div className='h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2' />
-        {/*
-      <ViewCounter slug={post.slug} trackView /> */}
       </div>
-      <Mdx code={post.body.code} />
+      <MDX source={post.content} />
     </section>
   );
 }
