@@ -6,7 +6,7 @@ export default async function sitemap() {
     lastModified: post.metadata.publishedAt,
   }));
 
-  const routes = ['', '/blog', '/about'].map((route) => ({
+  const routes = ['', '/blog', '/doing'].map((route) => ({
     url: `https://pascal-poredda.de${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }));
