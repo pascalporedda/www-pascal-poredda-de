@@ -1,8 +1,6 @@
-import { ThemeProvider } from '@/components/theme-provider';
 import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 import type { Metadata } from 'next';
-import { cn } from '@/lib/utils';
 import { Navbar } from '@/components/page-header';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { cx } from 'class-variance-authority';
