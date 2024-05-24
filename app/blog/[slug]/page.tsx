@@ -61,7 +61,7 @@ export default async function BlogPage({ params }: any) {
   // const tweets = await getTweets(post.tweetIds);
 
   return (
-    <section className='container'>
+    <section>
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{
@@ -92,7 +92,9 @@ export default async function BlogPage({ params }: any) {
         </div>
         <div className='h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2' />
       </div>
-      <MDX source={post.content} />
+      <article className='prose prose-quoteless prose-neutral dark:prose-invert'>
+        <MDX source={post.content} />
+      </article>
     </section>
   );
 }
