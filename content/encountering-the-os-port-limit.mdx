@@ -1,0 +1,181 @@
+---
+title: 'Encountering the OS port limit'
+summary: 'Building high performing applications, interacting with PostgresSQL + PGBouncer and encountering issues I have never seen before.'
+publishedAt: '2024-05-26'
+category: 'tech'
+---
+
+## not understanding how tcp connections work
+
+Recently I ran into a very strange issue: "error communicating with database: address not available (os error 99)".
+
+<Image src="/images/docker-problem/os-error-99.png" alt={''} width={900} height={300} />
+
+This issue lead me down a rabbit whole of optimizing our PostgresSQL instance, our PGBouncer and configurations
+just to understand, that this issue was not related to any of that. But let me explain how we got here.
+
+## what we are building
+
+We're building an SaaS based product for machine vendors to gather, analyse, visualize and report data
+for how much meat and cheese got produced in one day. We do this by collecting various datapoints from
+the machines that are in the field. Machines that cut meat and cheese, machines that seal, machines that pack
+those slices into packages or scales that weigh how much actually got into that package.
+
+One of the big issues you face when building such an application is the amount of data that can be produced
+by all those lines and machines. Millions of data points every day.
+
+And we were not ready.
+
+## our previous architecture
+
+For two years we ran our application stack for each tenant in its own [silo stack](https://docs.aws.amazon.com/whitepapers/latest/saas-tenant-isolation-strategies/silo-isolation.html).
+
+Our application stack looked basically like this:
+
+<Image src={'/images/docker-problem/k8s-infrastructure-before-migrating.png'} width={'800'} height={'400'}
+       alt="A diagram of our infrastructure before migrating it to a simpler stack." />
+
+This structure came with a few ameneties:
+
+1. Each tenant was completely segregated from all other tenants, and did not influence other tenants resources
+2. Each tenant could be updated individually easily, whilst others could remain on an older version of the product (which sometimes was real handy)
+3. Assigning a tenants service more CPU, database storage or other forms of resources was just a little tweak
+in the K8S deployment
+4. Debugging issues was a little bit easier than with our new architecture
+
+But there were downsides:
+
+1. Doing analytics throughout multiple tenants became a pain, since everything was completely segregated
+2. Each tenant required a full application-stack deployment, which always required a significant idle load on the K8S
+cluster, even if there was no load
+3. Updating a tenant was very cumbersome, and we needed other processes to fix this cumbersomeness
+4. Hitting the pod limits of our K8S cluster at some point, since every tenant got quite a few pods going
+
+For those, and more reasons we decided to migrate our infrastructure and application stack, step by step.
+We decided to move from a purely silo based stack, to a [pool based stack](https://docs.aws.amazon.com/whitepapers/latest/saas-tenant-isolation-strategies/pool-isolation.html),
+with some parts of the silo data-residency still kept.
+
+So we decided to move on.
+
+## our architecture now
+
+Now our simplified architecture looks like this:
+
+<Image src={'/images/docker-problem/k8s-infrastructure-after-migrating.png'} width={'800'} height={'400'}
+       alt="A diagram of our infrastructure after migrating to the new K8S architecture." />
+
+Now we have a dedicated Rust service for each domain, that is listening to global events, and emitting new ones.
+This forms our event driven architecture. To this date, I don't fully agree with this architecture, but it's been a team
+decision, so I can only argue so much.
+
+**Note:** I personally still find this setup way too complex, a simpler approach would also work, require less resources and be easier to maintain.
+
+During our migration process we choose Rust as our new backend language, since we were done with all the issues we had with our previous
+NodeJS implementation. We had issues with the garbage collector, with the performance of the language, with the amount of dependencies
+we had to manage, and with the amount of time we had to spend on debugging issues that were related to the language itself.
+
+Rust has so far been a really good choice. It's super fast, has an amazing type system, and for our needs it's been a really good fit, since
+we already use it for our edge computing devices. Most of the performance improvements we see now could have been achieved with NodeJS as well,
+since most of the problems were related to SQL queries, and not the language itself.
+
+Since we now did the second implementation of our application stack, we decided to also move from a monolithic database to a
+database per service, per tenant.
+
+**Personal note here**: I would have preferred to have a single database, with a single schema, and
+a single service that would handle all the tenants. This would have made the application stack way simpler, and would have reduced the
+cognitive load whilst developing a lot.
+
+We reached a point where we wanted to test our new architecture, and see how it performs under load.
+
+## the first load test of our new architecture
+
+Since we needed to migrate the old customer data that was inside their own stack into our global tenant stack, we had to create a few migrations scripts.
+Those scripts basically took the existing data, did some transformations and send the new values as a new input message into our RMQ system. With that
+we could simulate going through all the new architecture, and testing every single piece of the new service stack. And see it's limitations..
+
+We dumped one of our tenants data into the testing stack. Got a few millions of messages waiting to be processed, and started the service
+stack. Everything seemed to be working great! Hooray, success! Thousands and thousands of messages got processed every second, the load of our PostgresSQL server went up,
+whilst the data was flowing in. But only for the first 20 seconds.
+
+At that point our services started to run into a weird loop. The acknowledgement of messages went down drastically, messages got redelivered faster than light.
+We decided to simply restart the stack. but it happened again. The same thing.
+Our first impression of this was related to our PostgresSQL server, that might not be well configured. Maybe it was not be able to provide enough database connections? Or because the server was too CPU bound?
+So we started to optimize the database server. fiddled with the configurations, optimized workers and tried several things.
+All without any success. Then we thought: Ok maybe it's the PGBouncer that does the connection pooling, and might simply reject the connection requests? Since so many were happening concurrently.
+So we optimized it's configuration. Fiddled with all the parameters, trying to get the most performance for our use case out of it. We even tried other poolers like PGCat.
+Still no success. the error was still occurring after about 20 seconds.
+
+After some googling, we came to a Serverfault issue that was referring to this issue being a problem with the OS itself.
+The OS was not able to handle the amount of connections that were being opened and closed.
+How is that even possible? Were we not closing the database connections correctly? We investigated that, but that wasn't the issue either.
+
+So we decided to actually look at the OS itself. Restarted our testing, connected to a pod shell, ran `netstat` and saw that
+we had about 30000 connections in the `TIME_WAIT` state. But what does that mean?
+
+So apparently all those tcp connections were actually closed, since they were in the `TIME_WAIT` state, but through
+[this Serverfault post](https://serverfault.com/questions/329845/how-to-forcibly-close-a-socket-in-time-wait), we learned that:
+
+**the OS actually keeps those ports blocked for a little longer, to ensure that a new connection on that port does not receive packets that got not delivered in time to the old connection**.
+This got me down the rabit hole of understanding how TCP connections work and how the operating system handles them.
+
+I link to two of the most helpful resources I found here:
+- https://vincent.bernat.ch/en/blog/2014-tcp-time-wait-state-linux#summary
+- https://blog.cloudflare.com/when-tcp-sockets-refuse-to-die
+
+So did we solve our issue with the options at hand?
+
+## solving the issue
+
+We had three options to solve this issue:
+
+1. We are using SQLX as our executor for PostgresSQL queries. SQLX has a builtin for pooling, that runs inside the application code. With that we'd only
+open like 40-100 connections or how ever many we wanted to use. This would not open too many shortlived TCP connections, but comes with the drawback
+of having to manage a pool for each of our tenant within the service code. Which would also come with the drawback that if we would scale the
+service horizontally, we'd have to manage the pool across all instances.
+
+2. We could simply reduce the lifetime of tcp connections after they have been closed. This can be done when building the Docker image,
+by simply lowering the treshold. But since this threshold is there for a reason, we decided to go with the next open.
+
+3. Use more quadruplets for the connections. Instead of having our PGBouncer listening on one port, we could have it listen on multiple ports.
+This would allow us to have way more connections, and the implementation turned out to be very simple
+
+```rust
+
+let mut connection_url = database_config_info.database_url.clone();
+let mut additional_ports = self.additional_bouncer_ports.as_ref().map(|a| a.iter());
+
+loop {
+    let connection = connection_url.get_connection();
+
+    if let Ok(connection) = connection.await {
+        return Ok(AutoClosedConnection::new(connection));
+    }
+
+    if let Some(Some(next_port)) = additional_ports.as_mut().map(|i| i.next()) {
+        tracing::debug!("Failed to connect to database on port, retrying with the next port: {next_port})");
+        connection_url = connection_url.replace_port(*next_port).map_err(|e| {
+            DatabaseConfigError::Recoverable {
+                tenant: Some(tenant.to_owned()),
+                err: e,
+            }
+        })?;
+    } else {
+        break;
+    }
+}
+
+Err(DatabaseConfigError::Recoverable {
+    tenant: Some(tenant.to_owned()),
+    err: anyhow!("Failed to connect to database"),
+})
+
+```
+
+## conclusion
+
+We learned a lot about how the OS handles TCP connections, and how we can optimize our services to handle more connections.
+We also learned that the OS has a limit on how many connections it can handle, and that we can work around this limit by simply
+using more ports for the connections.
+
+Is this solution perfect? No. But it does work for now, and with the option to always add a few more ports we should never run
+into that problem ever again. The memory used for those `TIME_WAIT` connections is minimal, and the connections are closed after 60 seconds.

@@ -26,7 +26,7 @@ const CustomLink = (props: any) => {
 function RoundedImage(props: any) {
   return (
     <>
-      <Image alt={props.alt} className='rounded-lg' {...props} />;
+      <Image alt={props.alt} className='rounded-lg' {...props} />
     </>
   );
 }
@@ -59,8 +59,7 @@ function ProsCard({ title, pros }: ProsCardProps) {
                   stroke='currentColor'
                   strokeWidth='2'
                   strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
+                  strokeLinejoin='round'>
                   <path d='M22 11.08V12a10 10 0 11-5.93-9.14' />
                   <path d='M22 4L12 14.01l-3-3' />
                 </g>
@@ -91,8 +90,7 @@ function ConsCard({ title, cons }: ConsCardProps) {
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 20 20'
                 fill='currentColor'
-                className='h-4 w-4 text-red-500'
-              >
+                className='h-4 w-4 text-red-500'>
                 <path d='M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z' />
               </svg>
             </div>
@@ -104,18 +102,11 @@ function ConsCard({ title, cons }: ConsCardProps) {
   );
 }
 
-// const components = {
-//   Image: RoundedImage,
-//   a: CustomLink,
-//   Callout,
-//   ProsCard,
-//   ConsCard,
-// };
 function slugify(str: React.ReactNode[]) {
   return str
     .toString()
     .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
+    .trim()
     .replace(/\s+/g, '-') // Replace spaces with -
     .replace(/&/g, '-and-') // Replace & with 'and'
     .replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
