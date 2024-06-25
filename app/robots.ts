@@ -3,6 +3,7 @@ export default function robots() {
     rules: [
       {
         userAgent: '*',
+        disallow: ['_next/', 'api/'],
       },
     ],
     sitemap: 'https://pascal-poredda.de/sitemap.xml',
