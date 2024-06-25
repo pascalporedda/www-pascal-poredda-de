@@ -1,5 +1,7 @@
+const { withPlausibleProxy } = require('next-plausible');
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = withPlausibleProxy()({
   swcMinify: true,
   reactStrictMode: true,
   // experimental: {
@@ -8,6 +10,6 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'pascal-poredda.de'],
   },
-};
+});
 
 module.exports = nextConfig;
