@@ -1,0 +1,121 @@
+---
+title: 'Node.js to Rust in 2024'
+summary: 'My personal take on migrating away from Node.js over to Rust, for a large existing code base.'
+publishedAt: '2024-07-03'
+category: 'technology'
+---
+
+# Migrating is not worth it, except...
+
+... you really value the following:
+
+1. Having peace of mind that you have not broken any of the internal communication between
+the microservices when compiling your code.
+2. Actually, being pretty sure that the code you have been writing for the last 6 hours is working,
+without having it run once.
+3. Using the resources at hand more efficiently (CPU cores, memory). Performance gains are existing, but not as significant as you might think as there are other bottlenecks.
+4. Having a type system that actually is not just a facade like in TypeScript but actually helps you to write better code and to model your business logic in a way that is more understandable and maintainable.
+5. Not having to deal with build tools, big configuration files, and a lot of other stuff that is not directly related to writing code.
+
+So, you want to migrate? Let us dive into it.
+
+## Our reasoning: How we got started
+
+Over time, as our architecture grew, we experienced various problems and thought:
+"Yeah, just rewrite everything in Rust, that should fix it." Or something around those lines. That is actually
+not how it went, but it is a good summary of the thought process.
+
+In one of my prior blog posts, I wrote about how [we encountered the OS port limit](/https://pascal-poredda.de/blog/encountering-the-os-port-limit).
+In this article I also went a bit deeper into the then existing architecture. Basically, we had a setup
+of several Node.js microservices that were running in a K8S cluster, communicating over a message queue.
+
+At some point we actually got the chance to create one of our new services from scratch, and two of our team members decided to go with Rust.
+With that we also decided to not make the same mistakes again and immediately started code sharing through a Cargo Workspace.
+
+We created our own little "SDK" that we could use to, later, spin up new services faster. By the way, code sharing is way easier to achieve with Cargo than with NX, in my opinion.
+
+## The Migration Process: Learning curve and challenges
+
+Transitioning from Node.js to Rust was not without its hurdles.
+Rust code is beautiful. Until it is not. The compiler is your friend. Until it is not. Once you reach a certain level of complexity,
+figuring out your `-> where` clause can be a real pain in the a**. Imagine having to figure out this method signature:
+
+```rust
+async fn exec_query<F, R>(
+  client: Client,
+  max_retries: u8,
+  mut f: F,
+) -> Result<R, Error>
+where
+  F: FnMut(&mut ClientSession) -> Pin<Box<dyn Future<Output = Result<R, Error>> + Send + '_>> + Send,
+  R: Send + 'static,
+{
+  // ...
+}
+```
+
+If you are accustomed to JavaScript only or languages that are garbage collected, you will definitely encounter situations
+where you want to abstract things as much as possible and reduce code duplications as much as possible. As I tried to do in the example above.
+But that "JavaScript brain" will probably drive you into many rabbit holes, where you will end up with a lot of `Pin<Box<Future<Output = Result<dyn Trait, T>>>`s and `Arc<Mutex<T>>`s.
+
+You will learn a lot, but it will take time.
+
+In our first new service, we invested way more time than we anticipated. Reading, understanding, and fixing Rust's compiler errors often felt like a challenge.
+Until you finally understand that the compiler is telling you exactly what it wants, you are having a hard time.
+
+A video I can recommend watching: [Rust is easy](https://www.youtube.com/watch?v=CJtvnepMVAU).
+
+Another big pain point to mention is the lack of packages in the Rust ecosystem. In JavaScript land you can find a package for nearly everything.
+In Rust, it can be a bit harder. But the packages that exist are usually of very high quality.
+
+## Performance - Rust vs. Node.js
+
+### What is not significant
+
+Initially, we expected Rust to deliver considerable performance improvements over Node.js.
+
+In short: It did, but not to the extent we expected it to do. While Rust's performance is undeniably impressive, the most significant
+gains came from optimizing our database queries and addressing bottlenecks in our system architecture.
+
+In hindsight, we could have achieved also dramatic performance improvements with our then existing Node.js services by:
+
+1. Replacing the horrible Prisma ORM with no ORM at all
+2. Analyzing and optimizing our SQL queries, indexes, and overall database schema
+3. Using the functionality the TimescaleDB Toolkit provides
+
+So we could have saved ourselves a lot of time and effort by focusing on these optimizations first, before considering a migration to Rust.
+But now we have migrated nearly 90%, and we are not going back.
+
+### What is significant
+
+Our Rust services do consume way less memory. Whereas one Node.js service consumed about, at least, 2GB of RAM under some load, our Rust service is chilling way below 15MB.
+This is significant because back then one Node.js service was handling only one tenant, whereas now one Rust service is handling multiple tenants.
+
+The throughput of our MQ has increased significantly. We are now able to process more messages in less time, and we are not even close to the limits of our system.
+Because of the way we can parallelize work in Rust, we can simply use more CPU cores, and we are not bound to the single-threaded nature of Node.js.
+The ecosystem around Rust is also very mature, and we can use libraries like `tokio` to handle our async workloads.
+
+## Learning from building things a second time
+
+Something I yet have to learn is that code should always be written in a way that you can simply throw it away.
+Throwing away code is not a bad thing. Your code does not need to be perfect the first time, second or even the third
+time you write it. The first time you write your code, you probably have not fully understood the problem yet. The second is
+neither. Maybe the third time. But trying to abstract things too early, trying to make things too generic, will only make
+your code harder to understand and maintain.
+
+Accept that it is okay to duplicate code, copy and paste things here and there, and maybe in the third iteration
+when you truly understood the problem, throw in some generics.
+
+Solutions to problems tend to grow in software very often. And sometimes revising your code and throwing it away is the best
+thing you can do. The second time you build something, you will have a better understanding of the problem, and you will
+write better code therefore. It does not mean the second time will be faster, but it will solve a more concrete problem.
+
+With time and experience as a software developer, you get better and understanding problems and write less shi**y code
+the first time. But you will never be perfect. And that is okay.
+
+## Last words
+
+The migration of our services did take many months and is not yet completely done, but overall the decision was good.
+I personally developed an immense interest in learning how to ship in Rust. I continue to learn new things, and there
+are so many things that once you touch them, you feel like you know nothing. In an upcoming post, I will tell you a
+bit more about how to use the Rust Compiler to your advantage, by relying it on it, kind of like TDD, but without tests.
