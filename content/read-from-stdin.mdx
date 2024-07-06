@@ -1,0 +1,185 @@
+---
+title: 'Read from stdin'
+summary: 'Always support reading from stdin and files in your CLI apps. Implementing reading stdin or from file with Rust.'
+---
+
+Outline:
+
+- My way of building CLI apps thus far
+
+## Intro
+
+In the last couple of years I have built a variety of CLI applications. They have been build to read
+data from files (.csv, .tsv..) or request data from some external API and further process it. I built them
+with PHP, then Python, NodeJS and nowadays I use Rust (btw.).
+
+These tools have a specific use case, but most of the time the same structure:
+
+input --> process --> output
+
+## My approach to building CLI tools so far
+
+When I should read .csv file for example I usually let the user specify the filename either as an
+unnamed or a named argument. I would always assume that the file would reside in the same directory as
+the current working directory. The output file name could either then be specified with a named argument,
+or not at all. The user had little control on how to get data in and out.
+
+This does get the job done, for sure. But it can be improved.
+
+## The benefits of leveraging the shell
+
+The shell comes with many powerful features out of the box: Piping data from one command to another,
+_parallelizing_ things, and an overal great suite of core utils to do all sorts of reading, manipulating streams
+or batch processing. This especialy comes in handy if you have to work with large amounts of text data (eg. logfiles).
+
+## An example: Importing vehicles and images from a third party service
+
+In this article I will focus on a recent use case of importing data (vehicles) from a third-party service ([mobile.de](https://mobile.de)).
+The third party service offers a .zip export, which contains files an arbitrary number of .json files and .jpg files.
+The .jpg files are matched to the .json file by their filename prefix.
+
+```bash
+-rw-rw-r--@   1 pascal  staff   8.7K Aug  9 11:07 372938920.json
+-rw-rw-r--@   1 pascal  staff   217K Aug  9 11:07 372938920_1.jpg
+-rw-rw-r--@   1 pascal  staff   136K Aug  9 11:07 372938920_10.jpg
+-rw-rw-r--@   1 pascal  staff   133K Aug  9 11:07 372938920_11.jpg
+-rw-rw-r--@   1 pascal  staff   202K Aug  9 11:07 372938920_12.jpg
+-rw-rw-r--@   1 pascal  staff   118K Aug  9 11:07 372938920_13.jpg
+-rw-rw-r--@   1 pascal  staff   210K Aug  9 11:07 372938920_14.jpg
+-rw-rw-r--@   1 pascal  staff   193K Aug  9 11:07 372938920_15.jpg
+-rw-rw-r--@   1 pascal  staff   175K Aug  9 11:07 372938920_16.jpg
+-rw-rw-r--@   1 pascal  staff   210K Aug  9 11:07 372938920_17.jpg
+-rw-rw-r--@   1 pascal  staff   179K Aug  9 11:07 372938920_18.jpg
+-rw-rw-r--@   1 pascal  staff   177K Aug  9 11:07 372938920_19.jpg
+-rw-rw-r--@   1 pascal  staff   212K Aug  9 11:07 372938920_2.jpg
+-rw-rw-r--@   1 pascal  staff    99K Aug  9 11:07 372938920_20.jpg
+-rw-rw-r--@   1 pascal  staff   142K Aug  9 11:07 372938920_21.jpg
+-rw-rw-r--@   1 pascal  staff   127K Aug  9 11:07 372938920_22.jpg
+-rw-rw-r--@   1 pascal  staff   146K Aug  9 11:07 372938920_23.jpg
+-rw-rw-r--@   1 pascal  staff   138K Aug  9 11:07 372938920_24.jpg
+-rw-rw-r--@   1 pascal  staff   107K Aug  9 11:07 372938920_25.jpg
+-rw-rw-r--@   1 pascal  staff   196K Aug  9 11:07 372938920_26.jpg
+-rw-rw-r--@   1 pascal  staff    87K Aug  9 11:07 372938920_27.jpg
+-rw-rw-r--@   1 pascal  staff   148K Aug  9 11:07 372938920_28.jpg
+-rw-rw-r--@   1 pascal  staff   196K Aug  9 11:07 372938920_3.jpg
+-rw-rw-r--@   1 pascal  staff   189K Aug  9 11:07 372938920_4.jpg
+-rw-rw-r--@   1 pascal  staff   194K Aug  9 11:07 372938920_5.jpg
+-rw-rw-r--@   1 pascal  staff   177K Aug  9 11:07 372938920_6.jpg
+-rw-rw-r--@   1 pascal  staff   186K Aug  9 11:07 372938920_7.jpg
+-rw-rw-r--@   1 pascal  staff   196K Aug  9 11:07 372938920_8.jpg
+-rw-rw-r--@   1 pascal  staff   181K Aug  9 11:07 372938920_9.jpg
+```
+
+Each .json file contains information about the vehicle (mileage, make, type, color..). I need to import
+these vehicles into a PostgresSQL database, containing all the relevant metadata and upload the vehicles
+images to some external storage, retrieve the url and create database rows for each image and refer them
+to the vehicle row.
+
+My initial implementation looked somewhat like this (if you're not familiar with Rust don't worry):
+
+```rust
+
+#[tokio::main]
+async fn main() -> Result<(), std::io::Error> {
+    let zip_content = std::fs::read("archive.zip")?;
+
+    let tmp_dir = TempDir::new("mobile_de_import")?;
+    if let Err(e) = zip_extract::extract(Cursor::new(zip_content), tmp_dir.path(), true) {
+        println!("Failed to extract zip file due to: {}", e);
+
+        std::process::exit(1);
+    }
+
+    let tmp_path = tmp_dir.into_path();
+
+    std::fs::read_dir(&tmp_path)?
+        .flatten()
+        .map(|p| p.path())
+        .collect()
+
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect("postgres://.....")
+        .await;
+
+    if pool.is_err() {
+        println!("Failed to connect to DB due to: {}", pool.unwrap_err());
+        std::process::exit(1);
+    }
+
+    let pool = pool.unwrap();
+
+    for json_file in files
+        .iter()
+        .filter(|p| p.extension().and_then(|e| e.to_str()).unwrap_or("") == "json")
+    {
+        // TODO: read images and add them to the db
+        let file_content = std::fs::read_to_string(json_file)?;
+
+        let json = serde_json::from_str::<models::MobileExport>(&file_content)?;
+
+        let r = sqlx::query!(
+            "INSERT INTO vehicles (make, model, mileage, additional_properties, created_at, updated_at) VALUES ($1::text, $2::text, $3::int, $4::json, now(), now())",
+            json.make.unwrap_or(String::from("n/a")),
+            json.model.unwrap_or(String::from("n/a")),
+            json.mileage.unwrap_or(0.0) as i32,
+            serde_json::to_value(file_content)?
+        )
+        .execute(&pool)
+        .await;
+    }
+
+    Ok(())
+```
+
+I followed the same principle like I always did: Simply expecting a file at a specific location
+to exist. This worked and worked as a proof of concept. My first refactoring involved adding arguments
+for the db_url and a location for the zip file:
+
+```rust
+#[derive(Parser)]
+#[command(author, version, about, long_about = None)]
+struct ImportFileArgs {
+    #[arg(long, short)]
+    pub zip_file: Option<std::path::PathBuf>,
+    #[arg(long, short, default_value_t = String::from("postgres://..."))]
+    pub db_url: String,
+}
+
+#[tokio::main]
+async fn main() -> Result<(), std::io::Error> {
+    let args = ImportFileArgs::parse();
+    let zip_content = std::fs::read(args.zip_file.unwrap_or("does-not-exist.zip"))?;
+
+    let tmp_dir = TempDir::new("mobile_de_import")?;
+    if let Err(e) = zip_extract::extract(Cursor::new(zip_content), tmp_dir.path(), true) {
+        println!("Failed to extract zip file due to: {}", e);
+
+        std::process::exit(1);
+    }
+
+    let tmp_path = tmp_dir.into_path();
+
+    std::fs::read_dir(&tmp_path)?
+        .flatten()
+        .map(|p| p.path())
+        .collect()
+
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect(&args.db_url)
+        .await;
+```
+
+This was a bit more comfortable to work with and would allow the user to use any database url + file name.
+
+## Making the implementation STDIN and STDOUT compatible
+
+```rust
+    std::io::stdin()
+        .lock()
+        .lines()
+        .map_while(Result::ok)
+        .map(|l| PathBuf::from_str(&l).unwrap())
+        .collect()
+```
