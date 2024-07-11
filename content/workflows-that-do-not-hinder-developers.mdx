@@ -1,0 +1,82 @@
+---
+title: 'Workflows that do not hinder developers'
+summary: 'A rant about development workflows in large companies: Why they are sometimes overly complicated, and a simpler approach.'
+publishedAt: '2024-07-11'
+category: 'technology'
+---
+
+# Development Workflows in large companies
+
+I have been frustrated a couple of times by workflows that are in place in large companies.
+I am talking about workflows, where you need to pass through a gazillion number of stages to ship your code to the end user.
+
+Do they have their purpose? Maybe. But let me rant a little.
+
+## "Isn't it ridiculous through how many stages we must go through?"...
+
+... This was a question I once asked in a meeting, where we discussed our workflow.
+Everything felt a little bit overly complicated to me.
+How many stages does one need to ship a feature? Answer: All of them.
+
+Create a ticket.
+Then fill that ticket with life.
+Then talk about the ticket in a meeting.
+Then estimate that ticket in another meeting.
+Then discuss those estimations with all other team members.
+Then pick up the ticket, create a branch, and do the work.
+Then make test that feature locally to make sure it is working as expected.
+Then add test coverage.
+Add Unit Tests.
+Add E2E tests.
+Add integration tests.
+Then write documentation.
+Then, if necessary, make sure K8S reflects all the necessary changes.
+Then create a changelog.
+Then release it to DEV to test it there.
+Then release it to STG to test it again.
+Then, finally, release it to PRD.
+
+Just to find out that there was still an issue with the feature, and users demanded something different,
+so you have to go through these steps again.
+
+I do agree that most of these steps have their purpose.
+But at times this just feels like it is overcomplicating things.
+
+There lie many problems in this workflow, one of them being that it is hard to iterate quickly on a feature.
+
+## Simplicity
+
+I have experienced this simplicity once in a company I worked for.
+We did not have a lot of stages to go through.
+We had a trunk-based development workflow.
+A developer would simply commit to the trunk branch, and the code would be deployed to dev automatically.
+If the feature was ready, it would be deployed to production, since the DEV was mirroring the PRD instance.
+Tickets existed in the form of Linear tickets, where you could just pick up a ticket and work on it.
+No guesstimates, no meetings, no unnecessary discussions.
+No need to write documentation for something that might not even be used later on.
+If something did not work in DEV, it was noticed either by yourself or some other developer who also worked on the trunk
+and maybe had some of his parts broken by your code.
+
+It was simple. And beautiful.
+
+It allowed us to iterate quickly on features, ship code faster, and get feedback quickly.
+
+## Trunk-based development
+
+I am a big fan of trunk-based development.
+It does add a bit of skin-in-the-game.
+Because if you push something that breaks your deployment,
+it's going to be broken for everyone else as well, and they will tell you.
+
+You also prevent long-lived feature branches, which can be a pain when it comes to bigger merge conflicts.
+Instead, you are simply working on the latest version of your codebase all the time.
+
+It also forces you to make tasks non-dependent on each other, which is a good thing.
+Huge refactorings that take months become a thing of the past, instead you refactor small parts of your codebase at a time.
+
+## Conclusion
+
+Depending on what you are working on, you might need a more complex workflow.
+But do not overdo it.
+This is maybe a wild take,
+but I think that in some environments, it is totally ok to push to production and see if it still works.
