@@ -1,7 +1,8 @@
 export const short_bio = () => {
   return (
     <>
-      Hey, I&apos;m {name}. I built stuff and write and document things on my blog.
+      Hey, I&apos;m {name}. I write articles for developers, and build stuff for
+      the internet.
     </>
   );
 };
@@ -9,9 +10,5 @@ export const short_bio = () => {
 export const name = 'Pascal';
 
 export const about = () => {
-  return (
-    <>
-
-    </>
-  );
+  return <></>;
 };

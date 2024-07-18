@@ -19,19 +19,19 @@
   --sh-entity: #e25a1c;
 }
 
-/* TODO: reintroduce dark scheme at some point */
-/* @media (prefers-color-scheme: dark) { */
-/*   :root { */
-/*     --sh-class: #4c97f8; */
-/*     --sh-identifier: white; */
-/*     --sh-keyword: #f47067; */
-/*     --sh-string: #0fa295; */
-/*   } */
-/**/
-/*   html { */
-/*     color-scheme: dark; */
-/*   } */
-/* } */
+ @media (prefers-color-scheme: dark) {
+   :root {
+     --sh-class: #4c97f8;
+     --sh-identifier: white;
+     --sh-keyword: #f47067;
+     --sh-string: #0fa295;
+     --sh-jsxliterals: #efefef;
+   }
+
+   html {
+     color-scheme: dark;
+   }
+ }
 
 html {
   min-width: 360px;
