@@ -1,4 +1,4 @@
-const { withPlausibleProxy } = require('next-plausible');
+// const { withPlausibleProxy } = require('next-plausible');
 
 const ContentSecurityPolicy = `
     default-src 'self' vercel.live;
@@ -43,7 +43,7 @@ const securityHeaders = [
 ];
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPlausibleProxy()({
+const nextConfig = /*withPlausibleProxy()(*/ {
   redirects: async () => {
     return [
       {
@@ -65,6 +65,6 @@ const nextConfig = withPlausibleProxy()({
   images: {
     domains: ['images.unsplash.com', 'pascal-poredda.de'],
   },
-});
+};
 
 module.exports = nextConfig;

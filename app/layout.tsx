@@ -1,4 +1,5 @@
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Navbar } from '@/components/page-header';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -6,7 +7,7 @@ import { cx } from 'class-variance-authority';
 
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
-import PlausibleProvider from 'next-plausible';
+// import PlausibleProvider from 'next-plausible';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
@@ -57,9 +58,10 @@ export default function RootLayout({
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <main className='flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0'>
             <Navbar />
-            <PlausibleProvider domain='pascal-poredda.de'>
-              {children}
-            </PlausibleProvider>
+            {/*<PlausibleProvider domain='pascal-poredda.de'>*/}
+            {children}
+            {/*</PlausibleProvider>*/}
+            <Analytics />
             <SpeedInsights />
           </main>
         </ThemeProvider>
