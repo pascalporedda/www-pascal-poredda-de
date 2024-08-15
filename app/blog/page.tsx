@@ -1,4 +1,3 @@
-import { TypographyH1 } from '@/components/ui/typogrpahy/h1';
 import Link from 'next/link';
 import { parse } from 'date-fns';
 import DateFormatter from '@/components/date-formatter';
@@ -7,8 +6,6 @@ import { getBlogPosts } from '../db/blog';
 
 export const metadata = {
   title: 'Blog',
-  description:
-    'Interesting takes on software development, building better things and the pathless path.',
 };
 
 export default async function Blog() {

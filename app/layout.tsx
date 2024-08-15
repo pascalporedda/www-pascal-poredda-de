@@ -16,13 +16,20 @@ export const metadata: Metadata = {
     default: 'Pascal Poredda',
     template: '%s | Pascal Poredda',
   },
-  description: '',
+  keywords: [
+    'rust',
+    'web development',
+    'software engineering',
+    'personal blog',
+    'node js',
+  ],
+  description: 'Developer, writer, creator.',
   openGraph: {
     title: 'Pascal Poredda',
-    description: 'Developer, writer, and creator of things.',
+    description: 'Developer, writer, creator.',
     url: 'https://pascal-poredda.de',
     siteName: 'Pascal Poredda',
-    locale: 'en-US',
+    locale: 'en_US',
     type: 'website',
   },
   robots: {
