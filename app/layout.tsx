@@ -16,6 +16,12 @@ export const metadata: Metadata = {
     default: 'Pascal Poredda',
     template: '%s | Pascal Poredda',
   },
+  authors: [
+    {
+      name: 'Pascal Poredda',
+      url: 'https://pascal-poredda.de',
+    },
+  ],
   keywords: [
     'rust',
     'web development',

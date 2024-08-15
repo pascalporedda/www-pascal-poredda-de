@@ -32,6 +32,7 @@ export default function Home() {
           <a
             rel='noopener noreferrer'
             target='_blank'
+            title={"Visit Pascal Poredda's LinkedIn profile"}
             href='https://www.linkedin.com/in/pascal-poredda-8025221b5/'
             className='flex items-center gap-2'>
             <LinkedInLogoIcon />
@@ -40,12 +41,16 @@ export default function Home() {
           <a
             rel='noopener noreferrer'
             target='_blank'
+            title={"Visit Pascal Poredda's Github profile"}
             href='https://github.com/pascalporedda'
             className='flex items-center gap-2'>
             <GitHubLogoIcon />
             @pascalporedda
           </a>
-          <Link href='/blog' className='flex items-center gap-2'>
+          <Link
+            href='/blog'
+            title={'Read my blog posts'}
+            className='flex items-center gap-2'>
             <PaperPlaneIcon />
             read the blog
           </Link>
@@ -60,6 +65,7 @@ export default function Home() {
             className='flex items-center hover:text-neutral-700 dark:hover:text-neutral-200 transition-all space-x-2'
             rel='noopener noreferrer'
             target='_blank'
+            title={"Visit Pascal Poredda's X.com profile"}
             href='https://x.com/pascal_poredda'>
             <ArrowRightIcon />
             <p className='h-7'>follow me on X.com</p>
@@ -70,6 +76,7 @@ export default function Home() {
             className='flex items-center hover:text-neutral-700 dark:hover:text-neutral-200 transition-all space-x-2'
             rel='noopener noreferrer'
             target='_blank'
+            title={"Subscribe to Pascal Poredda's YouTube channel"}
             href='https://youtube.com/@pascalporedda'>
             <ArrowRightIcon />
             <p className='h-7'>subscribe to my YouTube</p>
