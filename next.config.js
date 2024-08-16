@@ -1,4 +1,4 @@
-// const { withPlausibleProxy } = require('next-plausible');
+const { withPlausibleProxy } = require('next-plausible');
 
 const ContentSecurityPolicy = `
     default-src 'self' vercel.live;
@@ -67,4 +67,4 @@ const nextConfig = /*withPlausibleProxy()(*/ {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPlausibleProxy()(nextConfig);
