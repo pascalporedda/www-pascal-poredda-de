@@ -1,0 +1,340 @@
+---
+title: 'Building my first Chrome extension'
+summary:
+'I have built my first Chrome extension that integrates with WhatsApp Web
+and helps you to transcribe & summarize voice messages.'
+publishedAt: '2024-08-16'
+category: 'technology'
+---
+
+# WhatsApp Voice: A Chrome extension for transcribing voice messages
+
+I have built my first Chrome extension that integrates with WhatsApp Web. This idea
+stems from the frustration of having to listen to a 5-minute-long voice note a friend sent me
+that could have been summarized in 10 seconds.
+
+I _hate_ listening to voice messages. I prefer reading. Voice is one of the slowest ways to communicate,
+and I prefer to optimize things.
+So I decided to have a small fun project, a little Chrome extension that helps me to transcribe voice notes,
+and summarize them.
+
+## Why a Chrome extension?
+
+I do use WhatsApp a lot for communicating with friends and business partners, but I prefer to use it on my desktop.
+I do not like typing on my phone since I am way faster on my Moonlander keyboard.
+I personally do not have the WhatsApp Web Desktop app installed.
+Instead, I always use the web version inside my Arc browser because it is easier to have that open in the background without it occupying a spot in my ALT-Tab list.
+
+Choosing to build a Chrome extension comes with the drawback that not too many people use the browser version anymore,
+most people rely on the desktop app or the mobile app.
+Integrating yourself into those apps is not really possible without writing your very own WA client, which is also possible,
+but way more effort.
+
+I have stumbled over a GitHub project called [WhatsApp WebJS](https://github.com/pedroslopez/whatsapp-web.js),
+which is a library that allows you to interact with the WhatsApp Web interface.
+It is not an official library from WhatsApp, sadly such does not exist,
+This library works using a headless browser to interact with the WhatsApp Web interface,
+which you then can script.
+With such you could build your own WhatsApp bot or a fully custom WhatsApp client.
+
+In my case I could not use this library directly, but it surely helped me to understand how the WhatsApp Web interface works.
+
+## "Reverse engineering" WhatsApp Web
+
+The problem I faced was quite clear.
+I had a voice message that I wanted the user to be able to transcribe.
+My extension should integrate seamlessly into the UI, with a very lightweight UX.
+
+There should be a simple button, and within the click of a button the message should be transcribed, and the transcription should be displayed
+as if it was part of the normal WhatsApp UI.
+
+I had to figure out how to interact with the voice message, how to extract the audio data, and how to send it to a transcription service.
+Since Whisper by OpenAI is so good, I knew that the "hard part" of transcribing was already done, I just had to figure out how to get the audio data.
+
+I started by inspecting the Network traffic that was happening when I started to play an audio message in WhatsApp Web.
+I noticed that the audio data was being streamed from a URL,
+but the URL was not directly accessible, since it was a blob URL.
+
+TODO: INSERT Image of network tab and blob URL here
+
+My initial thought was I could simply build a network interceptor that could duplex the audio data.
+Sadly, it is not possible to intercept such blob URLs with a Chrome extension; therefore, I needed an alternative way.
+So I started to look into the mentioned library WhatsApp WebJS,
+and found that they have a way to download and send media data, so it must be possible to extract the audio data from the voice message.
+
+WhatsApp Web does store everything inside an IndexedDB, which is a browser-based database.
+Inside there reside all the messages, contacts, and so forth.
+
+Every message has a unique ID, which WhatsApp uses to identify the message. And luckily, they write these IDs into the DOM,
+so I could easily extract them.
+With this ID I could then query the IndexedDB for the message.
+With this message I could then extract the audio data and send it to my server.
+
+## Getting the audio data from a voice message
+
+The first step was to get all voice messages that are visible in the current chat. This was fairly straight forward.
+As already mentioned, they write every single MessageID into the DOM, so I could simply query for all elements that have a `data-id` attribute.
+
+```typescript
+  const elements = document.querySelectorAll('[data-id]');
+  const nodes: HTMLCanvasElement[] = [];
+  if (elements.length) {
+    elements.forEach(element => {
+      const id = element.getAttribute('data-id');
+
+      // false indicates that this message is from someone else, and not from ME
+      if (!id || !id.startsWith('false_')) return;
+
+      const waveformElement = element.querySelector('canvas');
+
+      if (id && waveformElement && !waveformElement.getAttribute('msg-id')) {
+        waveformElement.setAttribute('msg-id', id);
+        waveformElement.style.position = 'relative';
+      }
+
+      if (waveformElement) {
+        nodes.push(waveformElement);
+      }
+    });
+  }
+```
+I appended a simple button with an absolute positioning to each of the waveform elements, so the user
+could simply click on it and have the message transcribed.
+
+So now I had to figure out how to get the audio data from the clicked message.
+Luckily,
+the library WhatsApp WebJS does provide some utility functions that it uses internally to interact with the WhatsApp API:
+
+- https://github.com/pedroslopez/whatsapp-web.js/blob/066d8fa75ebc13b9cc74cfcd18ffd847b79be998/src/util/Injected/Store.js
+- https://github.com/pedroslopez/whatsapp-web.js/blob/066d8fa75ebc13b9cc74cfcd18ffd847b79be998/src/util/Injected/Utils.js
+
+These two little scripts do a lot of the heavy lifting
+and expose the internal WhatsApp API to the browser window object.
+Inside these scripts reside the important helper methods I needed in order for my extension to work.
+
+All I had to do was pass the message ID to the `window.Store.Msg.get` method,
+which would then return the message object if it existed.
+I then could check if this message was actually a voice message, and if it is, download its blob data.
+Then I could simply send that data to my server.
+The snippet for this:
+
+```typescript
+  const storeMsg = window.Store.Msg.get(messageId);
+
+  const contactId = storeMsg.from?._serialized;
+
+  let username = 'User';
+  if (contactId) {
+    const contact = window.Store.Contact.get(contactId);
+
+    if (contact) {
+      username = contact.name.split(' ')[0] || contact.pushname || username;
+    }
+  }
+
+  // @ts-expect-error - accessing window object
+  const msg = window.WWebJS.getMessageModel(storeMsg);
+  // @ts-expect-error - accessing window object
+  const dlFn = window.Store.DownloadManager.downloadAndDecrypt || window.Store.DownloadManager.downloadAndMaybeDecrypt;
+
+  if (msg && isAudio(msg)) {
+    dlFn({
+      directPath: msg.directPath,
+      encFilehash: msg.encFilehash,
+      filehash: msg.filehash,
+      mediaKey: msg.mediaKey,
+      mediaKeyTimestamp: msg.mediaKeyTimestamp,
+      type: msg.type,
+      signal: new AbortController().signal,
+    }).then((blobData: ArrayBuffer) => {
+      const blob = new Blob([blobData], { type: 'application/octet-stream' });
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        if (!reader.result || typeof reader.result !== 'string') return;
+
+        // data is base64 encoded
+        const voiceMessageData = reader.result.split(',')[1];
+
+        const data = {
+          data: voiceMessageData,
+          mimetype: msg.mimetype,
+          fileSize: msg.size,
+          duration: Number(msg.mediaObject?.contentInfo?.duration ?? msg.duration ?? 0),
+          id: msg.id._serialized,
+          username,
+        };
+
+        // send this data to the server...
+      };
+
+      reader.readAsDataURL(blob);
+    });
+  }
+```
+
+Something to mention here is that WA does base64 encode the audio data, so I had to decode it on my server.
+I also wanted to figure out the contact name that the user was interacting with.
+I then could pass this to my server as well, simply because I wanted ChatGPT later to be able to summarize the message in a more personal way.
+
+Sending the data to my server was fairly simple.
+I simply relied on the fetch API to send the data to my server. If it was successful, I would store the message in a Chrome storage, so I could access it later,
+even if the browser session ended.
+If an error occurred, I wanted to be notified, so I integrated Sentry alongside.
+
+```typescript
+const { id: messageId, ...data } = event.data;
+
+fetch(API_URL, {
+  method: 'POST',
+  body: JSON.stringify(data),
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+  .then(response => response.json())
+  .then(response => {
+    return messagesStore.upsertMessage(messageId, {
+      id: messageId,
+      formattedText: response.formattedText,
+      summary: response.summary,
+      transcribedText: response.transcription,
+    });
+  })
+  .catch(error => {
+    console.error('Error transcribing audio message', error);
+
+    sentryClient.captureException(error, {
+      data,
+    });
+
+    return messagesStore.updateMessageError(messageId, {
+      message: error.message,
+      stack: error.stack,
+    });
+  });
+```
+
+## The easy bit: Transcribing & Summarizing the audio data on my server
+
+The easy part was to stitch together a basic Node.js server that would accept the data sent by the Chrome extension.
+I used Express for this and the Whisper API to transcribe the audio data, and ChatGPT to summarize the transcription.
+
+It is a basic server that does not do much, but it does the job. Does this scale? Not really. Is it secure? Not really.
+Could it be exploited?
+Yes, for sure.
+But for now, just to get the job done, it is good enough.
+
+The route looks like this:
+
+```javascript
+app.post('/', async (req, res) => {
+  try {
+    const { data, mimetype, fileSize, duration, id, username } = req.body;
+
+    // Convert base64 to a Buffer
+    const audioBuffer = Buffer.from(data, 'base64');
+    const fileName = `${uuid.v4()}.mp3`;
+    const filePath = path.join(__dirname, fileName);
+
+    // Save the buffer to a file
+    fs.writeFileSync(filePath, audioBuffer);
+
+    // Create form data
+    const form = new FormData();
+    form.append('model', 'whisper-1');
+    form.append('file', fs.createReadStream(filePath));
+
+    // Call OpenAI Whisper API
+    const transcriptionResponse = await axios.post('https://api.openai.com/v1/audio/transcriptions', form, {
+      headers: {
+        ...form.getHeaders(),
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
+
+    // Clean up
+    fs.unlinkSync(filePath);
+
+    const transcription = transcriptionResponse.data.text;
+
+    if (!transcription) {
+      return res;
+    }
+
+    const summaryResponse = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: 'gpt-4o-mini',
+        messages: buildMessagesBody(username, transcription),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${API_KEY}`,
+        },
+      },
+    );
+
+    const responseText = summaryResponse.data.choices[0].message.content;
+
+    const [formattedText, summary] = responseText.split('---!###!---');
+
+    res.json({
+      id,
+      transcription,
+      formattedText: formattedText.trim(),
+      summary: summary.trim(),
+    });
+  } catch (error) {
+    console.error('Error processing request:', error.response ? error.response.data : error.message);
+    res.status(500).send('Internal Server Error');
+  }
+});
+```
+
+There are tons of options to improve upon, but for now, it does the job.
+
+## Building a Content UI for the Chrome extension
+
+One part was to neatly display all the content UI somehow inside the WhatsApp web interface.
+Chrome extensions do provide a way to inject your own content scripts into the page, that can be CSS and JavaScript.
+
+I opted into [using a boilerplate that I found on GitHub](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite), which had everything configured already,
+so all I had to do was build the UI with the stuff I already knew.
+
+All I had to do was figure out how to append my buttons to the waveform elements,
+and the message transcription below the voice message.
+I used React portals to keep the UI state still inside React but render it outside the React tree.
+On top, I already figured out where the waveform elements where in the DOM,
+so I could traverse around that element and append my custom elements that way.
+
+## Event dispatching for communication
+
+One of the issues I faced was the problem of communicating between the content script and the background script.
+Because of Chrome restrictions, I could not simply do the fetch request from within the content script,
+instead I had to rely on dispatching events. The content script would dispatch an event, and the background script would listen for that event and then do the fetch request.
+
+Once the fetch request was done, the background script would dispatch another event, which the content script would listen for.
+Doing it that way seemed a bit overkill, but since Chromes Manifest V3 this is the way to go.
+
+```typescript
+
+## What have I learned?
+
+The whole process of building this Chrome extension was a great learning experience for me.
+It took me, in total, maybe 10 hours to build. I had to figure out how Chrome extensions work, how to interact with the WhatsApp Web interface, and how to reverse engineer code that isn't mine.
+I learned how simple it is to integrate Whisper by OpenAI into your application and how good Whisper is.
+
+Things I am concerned about and would improve upon:
+
+1. If WhatsApp changes its codebase or API, my extension possibly could break overnight. Sadly they don't have an official API, so I had to rely on what was there.
+2. Data privacy concerns. I am sending all the audio data to my server, where I am storing them temporarily to be able to send the data to Whisper. Especially in countries like Germany,
+    this could be a big concern.
+I would have to figure out a way to make this more secure,
+and maybe even not store the data at all, and at best make sure it doesn't even leave the user's computer at all.
+3. Whisper is expensive. Transcribing a few longer voice notes does cost a few cents. If you scale this up, this could add up quickly
+
+Overall, I am happy with the result, and I am using it daily. It saves me a lot of time, and I can now read voice messages in seconds instead of minutes.
+I am thinking about open-sourcing this project, but I am not sure if I want to maintain it.
+
+I really enjoy building small projects like this, and I am looking forward to building more Chrome extensions in the future.
