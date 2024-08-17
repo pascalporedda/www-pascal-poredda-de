@@ -55,12 +55,15 @@ I started by inspecting the Network traffic that was happening when I started to
 I noticed that the audio data was being streamed from a URL,
 but the URL was not directly accessible, since it was a blob URL.
 
-TODO: INSERT Image of network tab and blob URL here
+<Image src="/images/chrome-extension/network-tab-inspecting-whatsapp-web.png" alt={'Me inspecting the network tab, when I clicked on the play button of a voice note.'} width={900} height={300} />
 
 My initial thought was I could simply build a network interceptor that could duplex the audio data.
 Sadly, it is not possible to intercept such blob URLs with a Chrome extension; therefore, I needed an alternative way.
 So I started to look into the mentioned library WhatsApp WebJS,
 and found that they have a way to download and send media data, so it must be possible to extract the audio data from the voice message.
+
+<Image src="/images/chrome-extension/network-tab-whatsapp-web-closer-look.png" alt={'A closer look at the response from before.'} width={900} height={300} />
+
 
 WhatsApp Web does store everything inside an IndexedDB, which is a browser-based database.
 Inside there reside all the messages, contacts, and so forth.
@@ -338,3 +341,4 @@ Overall, I am happy with the result, and I am using it daily. It saves me a lot 
 I am thinking about open-sourcing this project, but I am not sure if I want to maintain it.
 
 I really enjoy building small projects like this, and I am looking forward to building more Chrome extensions in the future.
+I will soon release this app to the public on the Chrome store so stay tuned!
