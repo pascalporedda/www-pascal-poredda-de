@@ -324,16 +324,16 @@ Doing it that way seemed a bit overkill, but since Chromes Manifest V3 this is t
 ## What have I learned?
 
 The whole process of building this Chrome extension was a great learning experience for me.
-It took me, in total, maybe 10 hours to build. I had to figure out how Chrome extensions work, how to interact with the WhatsApp Web interface, and how to reverse engineer code that isn't mine.
+It took me, in total, maybe 10 hours to build. I had to figure out how Chrome extensions work, how to interact with the WhatsApp Web interface, and how to reverse engineer code that is not mine.
 I learned how simple it is to integrate Whisper by OpenAI into your application and how good Whisper is.
 
 Things I am concerned about and would improve upon:
 
-1. If WhatsApp changes its codebase or API, my extension possibly could break overnight. Sadly they don't have an official API, so I had to rely on what was there.
+1. If WhatsApp changes its codebase or API, my extension possibly could break overnight. Sadly they do not have an official API, so I had to rely on what was there.
 2. Data privacy concerns. I am sending all the audio data to my server, where I am storing them temporarily to be able to send the data to Whisper. Especially in countries like Germany,
     this could be a big concern.
 I would have to figure out a way to make this more secure,
-and maybe even not store the data at all, and at best make sure it doesn't even leave the user's computer at all.
+and maybe even not store the data at all, and at best make sure it does not even leave the user's computer at all.
 3. Whisper is expensive. Transcribing a few longer voice notes does cost a few cents. If you scale this up, this could add up quickly
 
 Overall, I am happy with the result, and I am using it daily. It saves me a lot of time, and I can now read voice messages in seconds instead of minutes.

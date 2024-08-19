@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        disallow: ['_next/'],
+        disallow: ['/_next/'],
       },
     ],
     sitemap: 'https://pascal-poredda.de/sitemap.xml',
