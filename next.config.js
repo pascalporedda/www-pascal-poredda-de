@@ -67,4 +67,7 @@ const nextConfig = /*withPlausibleProxy()(*/ {
   },
 };
 
-module.exports = withPlausibleProxy()(nextConfig);
+module.exports = withPlausibleProxy({
+  customDomain: 'https://plausible.poredda.digital',
+  trackLocalhost: false,
+})(nextConfig);
