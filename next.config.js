@@ -51,6 +51,11 @@ const nextConfig = /*withPlausibleProxy()(*/ {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/about',
+        destination: '/doing',
+        permanent: true,
+      },
     ];
   },
   headers() {

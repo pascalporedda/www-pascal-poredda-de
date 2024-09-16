@@ -7,6 +7,10 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         disallow: ['/_next/'],
       },
+      {
+        userAgent: '*',
+        disallow: ['/proxy/'],
+      },
     ],
     sitemap: 'https://pascal-poredda.de/sitemap.xml',
     host: 'https://pascal-poredda.de',
