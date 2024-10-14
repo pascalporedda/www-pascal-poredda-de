@@ -3,7 +3,7 @@ const { withPlausibleProxy } = require('next-plausible');
 const ContentSecurityPolicy = `
     default-src 'self' vercel.live;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' analytics.poredda.digital cdn.vercel-insights.com vercel.live va.vercel-scripts.com;
-    style-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' vercel.live;
     img-src * blob: data:;
     media-src 'none';
     connect-src *;
