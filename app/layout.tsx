@@ -1,12 +1,10 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Navbar } from '@/components/page-header';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { cx } from 'class-variance-authority';
 
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
-import PlausibleProvider from 'next-plausible';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
@@ -65,15 +63,20 @@ export default function RootLayout({
   return (
     <html
       lang='en'
-      className={cx('bg-background', GeistSans.variable, GeistMono.variable)}>
+      className={cx('bg-background', GeistSans.variable, GeistMono.variable)}
+    >
+      <head>
+        <script
+          defer
+          src='https://analytics.poredda.digital/script.js'
+          data-website-id='ab6cbd04-2296-4a7b-9a77-298217ccb457'
+        ></script>
+      </head>
       <body className='antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
           <main className='flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0'>
             <Navbar />
-            <PlausibleProvider domain='pascal-poredda.de'>
-              {children}
-            </PlausibleProvider>
-            <SpeedInsights />
+            {children}
           </main>
         </ThemeProvider>
       </body>
