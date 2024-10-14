@@ -1,5 +1,3 @@
-const { withPlausibleProxy } = require('next-plausible');
-
 const ContentSecurityPolicy = `
     default-src 'self' vercel.live;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' analytics.poredda.digital cdn.vercel-insights.com vercel.live va.vercel-scripts.com;
@@ -72,7 +70,4 @@ const nextConfig = /*withPlausibleProxy()(*/ {
   },
 };
 
-module.exports = withPlausibleProxy({
-  customDomain: 'https://plausible.poredda.digital',
-  trackLocalhost: false,
-})(nextConfig);
+module.exports = nextConfig;
