@@ -5,8 +5,6 @@ import { cx } from 'class-variance-authority';
 
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
-import { ThemeProvider } from '@/components/theme-provider';
-import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://pascal-poredda.de'),

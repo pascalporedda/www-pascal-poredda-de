@@ -10,29 +10,22 @@ import {
   BriefcaseIcon,
   WrenchIcon,
   RssIcon,
+  Building2Icon,
+  HeartCrackIcon,
+  ChromeIcon,
+  BriefcaseBusiness,
 } from 'lucide-react';
 import avatar from '@/app/avatar.jpg';
+import { NotionLogoIcon } from '@radix-ui/react-icons';
 
 export default function LinksPage() {
   return (
     <div className='space-y-8 py-8 px-4'>
-      {/* Profile Header */}
-      <div className='flex flex-col items-center space-y-4'>
-        <Avatar className='w-24 h-24 border-2 border-white'>
-          <AvatarImage
-            src={avatar.src}
-            alt='Pascal Poredda'
-            className='grayscale'
-          />
-          <AvatarFallback>PP</AvatarFallback>
-        </Avatar>
-        <h1 className='text-white text-2xl font-bold'>Pascal Poredda</h1>
-        <p className='text-gray-400 text-center max-w-md'>
-          Building a software company, by building products. Rust Freelancer.
-        </p>
-        <p className='text-gray-500'>🇩🇪 CGN & 🇪🇸 BCN</p>
-      </div>
-
+      <h1 className='font-bold text-3xl mt-2'>Links</h1>
+      <p>
+        Here you can find all the links to my social media, profiles & other
+        website I own and host as an indie hacker.
+      </p>
       {/* Projects */}
       <section className='space-y-3'>
         <div className='flex items-center gap-2 text-white'>
@@ -45,8 +38,18 @@ export default function LinksPage() {
             variant='secondary'
             className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
             asChild>
+            <a href='https://poredda.digital'>
+              <Building2Icon className='mr-2 h-4 w-4' /> Poredda Digital - My
+              freelance service website
+            </a>
+          </Button>
+
+          <Button
+            variant='secondary'
+            className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
+            asChild>
             <a href='https://newtab-page.com'>
-              <BookOpenIcon className='mr-2 h-4 w-4' /> IndieHackers NewTab Page
+              <ChromeIcon className='mr-2 h-4 w-4' /> IndieHackers NewTab Page
             </a>
           </Button>
           <Button
@@ -54,7 +57,7 @@ export default function LinksPage() {
             className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
             asChild>
             <a href='https://notion-crm-export.com'>
-              <BookOpenIcon className='mr-2 h-4 w-4' /> Notion CRM Export
+              <NotionLogoIcon className='mr-2 h-4 w-4' /> Notion CRM Export
             </a>
           </Button>
           <Button
@@ -62,7 +65,8 @@ export default function LinksPage() {
             className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
             asChild>
             <a href='https://europecartrader.com'>
-              <BookOpenIcon className='mr-2 h-4 w-4' /> ECT - EuropeCarTrader
+              <BriefcaseBusiness className='mr-2 h-4 w-4' /> ECT -
+              EuropeCarTrader
             </a>
           </Button>
         </div>
@@ -80,7 +84,7 @@ export default function LinksPage() {
             variant='secondary'
             className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
             asChild>
-            <a href='https://indiepa.ge'>
+            <a href='https://indiepa.ge/pascal_poredda'>
               <BookOpenIcon className='mr-2 h-4 w-4' /> IndiePages - Build your
               Indie Page
             </a>
