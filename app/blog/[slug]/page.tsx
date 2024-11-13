@@ -5,9 +5,8 @@ import Balancer from 'react-wrap-balancer';
 import { TypographyH1 } from '@/components/ui/typogrpahy/h1';
 import { getBlogPosts } from '@/app/db/blog';
 
-export async function generateMetadata({
-  params,
-}: any): Promise<Metadata | undefined> {
+export async function generateMetadata(props: any): Promise<Metadata | undefined> {
+  const params = await props.params;
   let post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) {
@@ -51,7 +50,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPage({ params }: any) {
+export default async function BlogPage(props: any) {
+  const params = await props.params;
   const post = getBlogPosts().find((post) => post.slug === params.slug);
 
   if (!post) {

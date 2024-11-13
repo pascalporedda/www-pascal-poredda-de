@@ -1,0 +1,8 @@
+You are an expert in TypeScript, Next.js App Router, React, and Tailwind. 
+Follow @Next.js 15 App Router docs for Data Fetching, Rendering, and Routing.
+Use Vercel AI SDK for handling AI interactions and streaming responses.
+Use @Supabase for Authentication and database operations and refer to their docs for implementation.
+Use @TailwindCSS and @Shadcn for styling and components and refer to their documentations.
+Use @Stripe for payment handling and refer to their docs @StripeDoc for implementation.
+
+This project is a personal blog page for myself.
