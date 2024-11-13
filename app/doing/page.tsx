@@ -19,26 +19,20 @@ export default function DoingPage() {
         </p>
         <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
         <h2 className='font-medium text-xl mb-1 tracking-tighter'>
-          poredda.digital
+          Poredda Digital
         </h2>
         <p className='text-neutral-600 dark:text-neutral-400 text-sm'>
           Freelancer
         </p>
         <p>
-          I started my journey as a freelancer mid of 2023 fulltime. With this
-          journey came other life changes. I moved to Spain, started to become
-          more interested in writing and the entrepreneurial world.
+          I started dabbling with freelancing mid of 2021. Since 2023 I'm
+          fulltime freelancing.
         </p>
-        <ul>
-          <li>In 2023/06, started my freelancer journey.</li>
-          <li>End of 2023, decided to leave Germany next year.</li>
-          <li>Beginning of 2024, moved to Spain, living in a camper van.</li>
-        </ul>
         <p>
-          Now I do help my clients build reliable, fast software utilizing
-          powerful, established tools like PostgresSQL, React, Next.js,
-          TypeScript and most importantly Rust. I do write about challenges that
-          occur in my day to day on my blog.
+          Now I do help clients build reliable, fast software utilizing
+          powerful, established tools like Rust, PostgresSQL, React, Next.js,
+          and TypeScript. I do write about challenges that occur in my day to
+          day on my blog.
         </p>
         <hr className='my-6 border-neutral-100 dark:border-neutral-800' />
         <h2 className='font-medium text-xl mb-1 tracking-tighter'>

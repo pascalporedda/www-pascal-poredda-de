@@ -28,8 +28,7 @@ export default function LinksPage() {
         </Avatar>
         <h1 className='text-white text-2xl font-bold'>Pascal Poredda</h1>
         <p className='text-gray-400 text-center max-w-md'>
-          Running a software agency in Germany making 15-20k p/m. On my way to
-          reach my freedom number of 3k USD p/m from own SaaS.
+          Building a software company, by building products. Rust Freelancer.
         </p>
         <p className='text-gray-500'>🇩🇪 CGN & 🇪🇸 BCN</p>
       </div>
@@ -57,13 +56,6 @@ export default function LinksPage() {
             <a href='https://notion-crm-export.com'>
               <BookOpenIcon className='mr-2 h-4 w-4' /> Notion CRM Export
             </a>
-          </Button>
-          <Button
-            variant='secondary'
-            className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
-            disabled>
-            <BookOpenIcon className='mr-2 h-4 w-4' /> Contractor-flow
-            (Discontinued)
           </Button>
           <Button
             variant='secondary'
