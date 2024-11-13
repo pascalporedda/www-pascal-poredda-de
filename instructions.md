@@ -5,18 +5,33 @@
 - this is a personal website blog, about & personal link tree website
 - my name is Pascal Poredda
 
-## Tech Stack
+## about me
 
-- NextJS 14 with App Router
-- React 18
+- I'm a fulltime freelancer since 2023
+- I'm a Rust developer, experienced in backend & embedded development
+- I'm a writer, I write about my experiences and challenges
+- I'm a minimalist, I love simplicity and minimalism. Digital minimalism to be precise.
+
+Please include a short introduction about me in the pages where it makes sense.
+
+I am on a journey to build products that solve my own needs and help others with their problems.
+I am available for hire as a Rust & TypeScript / React freelancer.
+
+## Tech Stack for this website
+
+- NextJS 15 with App Router
+- React 19
 - @TailwindCSS for Styling 
 - @ShadcnUI and @AceternityUI components
 
-## Copywriting & Content style
+## Blog writing & content style
 
 - Engaging copywriting style, following the marketing master Russel Brunson
 - Use the Hook. Story. Offer. framework by Russel Brunson to create engaging content
 - The contents must be in English
+- Make it fun and engaging to read
+- Provide value to the reader, also include links to other resources, tools used 
+- Include code examples
 
 ## Colors
 
