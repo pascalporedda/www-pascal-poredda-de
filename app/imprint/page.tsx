@@ -16,7 +16,7 @@ export default function ImprintPage() {
         <TypographyP>
           Pascal Poredda
           <br />
-          Franz-Geuer-Straße 8
+          Franz-Geuer-Straße 6
           <br />
           50672 Köln
           <br />
@@ -40,7 +40,7 @@ export default function ImprintPage() {
         <TypographyP>
           Pascal Poredda
           <br />
-          Franz-Geuer-Straße 8
+          Franz-Geuer-Straße 6
           <br />
           50672 Köln
           <br />
