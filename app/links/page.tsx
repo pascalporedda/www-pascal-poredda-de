@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -6,145 +5,155 @@ import {
   LinkedinIcon,
   TwitterIcon,
   YoutubeIcon,
-  BookOpenIcon,
-  BriefcaseIcon,
-  WrenchIcon,
-  RssIcon,
   Building2Icon,
-  HeartCrackIcon,
   ChromeIcon,
   BriefcaseBusiness,
+  ExternalLinkIcon,
 } from 'lucide-react';
-import avatar from '@/app/avatar.jpg';
 import { NotionLogoIcon } from '@radix-ui/react-icons';
+
+export const metadata = {
+  title: 'Links to everything important',
+};
 
 export default function LinksPage() {
   return (
-    <div className='space-y-8 py-8 px-4'>
-      <h1 className='font-bold text-3xl mt-2'>Links</h1>
-      <p>
-        Here you can find all the links to my social media, profiles & other
-        website I own and host as an indie hacker.
-      </p>
-      {/* Projects */}
-      <section className='space-y-3'>
-        <div className='flex items-center gap-2 text-white'>
-          <BriefcaseIcon className='w-5 h-5' />
-          <h2 className='text-lg font-semibold'>My Projects</h2>
-        </div>
-        <Separator className='bg-gray-700' />
-        <div className='grid gap-3'>
-          <Button
-            variant='secondary'
-            className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
-            asChild>
-            <a href='https://poredda.digital'>
-              <Building2Icon className='mr-2 h-4 w-4' /> Poredda Digital - My
-              freelance service website
-            </a>
-          </Button>
+    <div className='max-w-2xl'>
+      {/* Header */}
+      <div className='space-y-4 mb-12'>
+        <h1 className='text-4xl font-bold'>Links</h1>
+        <p className='text-gray-400 text-lg'>
+          All my projects, tools, and social media profiles in one place.
+        </p>
+      </div>
 
-          <Button
-            variant='secondary'
-            className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
-            asChild>
-            <a href='https://newtab-page.com'>
-              <ChromeIcon className='mr-2 h-4 w-4' /> IndieHackers NewTab Page
-            </a>
-          </Button>
-          <Button
-            variant='secondary'
-            className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
-            asChild>
-            <a href='https://notion-crm-export.com'>
-              <NotionLogoIcon className='mr-2 h-4 w-4' /> Notion CRM Export
-            </a>
-          </Button>
-          <Button
-            variant='secondary'
-            className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
-            asChild>
-            <a href='https://europecartrader.com'>
-              <BriefcaseBusiness className='mr-2 h-4 w-4' /> ECT -
-              EuropeCarTrader
-            </a>
-          </Button>
-        </div>
-      </section>
+      {/* Projects Section */}
+      <div className='space-y-8 mb-16'>
+        <h2 className='text-2xl font-semibold'>Projects</h2>
+        <div className='grid gap-4'>
+          <a
+            href='https://poredda.digital'
+            className='group p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-3'>
+                <Building2Icon className='h-6 w-6 text-orange-500' />
+                <div>
+                  <h3 className='font-medium mb-1'>Poredda Digital</h3>
+                  <p className='text-sm text-gray-400'>
+                    My freelance service website
+                  </p>
+                </div>
+              </div>
+              <ExternalLinkIcon className='h-5 w-5 text-gray-500 group-hover:text-white transition-colors' />
+            </div>
+          </a>
 
-      {/* Tools I Use */}
-      <section className='space-y-3'>
-        <div className='flex items-center gap-2 text-white'>
-          <WrenchIcon className='w-5 h-5' />
-          <h2 className='text-lg font-semibold'>Tools I Use</h2>
+          <a
+            href='https://newtab-page.com'
+            className='group p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-3'>
+                <ChromeIcon className='h-6 w-6 text-blue-500' />
+                <div>
+                  <h3 className='font-medium mb-1'>IndieHackers NewTab Page</h3>
+                  <p className='text-sm text-gray-400'>
+                    Stay motivated with IndieHacker content
+                  </p>
+                </div>
+              </div>
+              <ExternalLinkIcon className='h-5 w-5 text-gray-500 group-hover:text-white transition-colors' />
+            </div>
+          </a>
+
+          <a
+            href='https://notion-crm-export.com'
+            className='group p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-3'>
+                <NotionLogoIcon className='h-6 w-6 text-gray-200' />
+                <div>
+                  <h3 className='font-medium mb-1'>Notion CRM Export</h3>
+                  <p className='text-sm text-gray-400'>
+                    Export your Notion database with comments
+                  </p>
+                </div>
+              </div>
+              <ExternalLinkIcon className='h-5 w-5 text-gray-500 group-hover:text-white transition-colors' />
+            </div>
+          </a>
+
+          <a
+            href='https://europecartrader.com'
+            className='group p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-3'>
+                <BriefcaseBusiness className='h-6 w-6 text-green-500' />
+                <div>
+                  <h3 className='font-medium mb-1'>ECT - EuropeCarTrader</h3>
+                  <p className='text-sm text-gray-400'>
+                    European car marketplace
+                  </p>
+                </div>
+              </div>
+              <ExternalLinkIcon className='h-5 w-5 text-gray-500 group-hover:text-white transition-colors' />
+            </div>
+          </a>
         </div>
-        <Separator className='bg-gray-700' />
-        <div className='grid gap-3'>
-          <Button
-            variant='secondary'
-            className='w-full bg-gray-600/50 hover:bg-gray-600/70 text-white justify-start'
-            asChild>
-            <a href='https://indiepa.ge/pascal_poredda'>
-              <BookOpenIcon className='mr-2 h-4 w-4' /> IndiePages - Build your
-              Indie Page
-            </a>
-          </Button>
+      </div>
+
+      {/* Tools Section */}
+      <div className='space-y-8 mb-16'>
+        <h2 className='text-2xl font-semibold'>Tools I Use</h2>
+        <div className='grid gap-4'>
+          <a
+            href='https://indiepa.ge/pascal_poredda'
+            className='group p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'>
+            <div className='flex items-center justify-between'>
+              <div className='flex items-center gap-3'>
+                <div className='h-6 w-6 bg-purple-500 rounded-md flex items-center justify-center text-white font-bold'>
+                  I
+                </div>
+                <div>
+                  <h3 className='font-medium mb-1'>IndiePages</h3>
+                  <p className='text-sm text-gray-400'>Build your Indie Page</p>
+                </div>
+              </div>
+              <ExternalLinkIcon className='h-5 w-5 text-gray-500 group-hover:text-white transition-colors' />
+            </div>
+          </a>
         </div>
-      </section>
+      </div>
 
       {/* Social Links */}
-      <section className='space-y-3'>
-        <div className='flex items-center gap-2 text-white'>
-          <h2 className='text-lg font-semibold'>Connect With Me</h2>
+      <div className='space-y-8'>
+        <h2 className='text-2xl font-semibold'>Connect</h2>
+        <div className='flex flex-wrap gap-4'>
+          <a
+            href='https://github.com/pascalporedda'
+            className='p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'
+            title='GitHub'>
+            <GithubIcon className='h-6 w-6' />
+          </a>
+          <a
+            href='https://www.linkedin.com/in/pascal-poredda-8025221b5/'
+            className='p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'
+            title='LinkedIn'>
+            <LinkedinIcon className='h-6 w-6' />
+          </a>
+          <a
+            href='https://x.com/pascal_poredda'
+            className='p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'
+            title='X/Twitter'>
+            <TwitterIcon className='h-6 w-6' />
+          </a>
+          <a
+            href='https://youtube.com/@pascalporedda'
+            className='p-4 bg-zinc-900 rounded-lg border border-zinc-800 hover:border-zinc-700 transition-all'
+            title='YouTube'>
+            <YoutubeIcon className='h-6 w-6' />
+          </a>
         </div>
-        <Separator className='bg-gray-700' />
-        <div className='flex flex-wrap gap-3 justify-center'>
-          <Button
-            variant='outline'
-            size='icon'
-            className='rounded-full w-12 h-12'
-            asChild>
-            <a
-              href='https://github.com/pascalporedda'
-              title="Visit Pascal Poredda's Github profile">
-              <GithubIcon className='h-5 w-5' />
-            </a>
-          </Button>
-          <Button
-            variant='outline'
-            size='icon'
-            className='rounded-full w-12 h-12'
-            asChild>
-            <a
-              href='https://www.linkedin.com/in/pascal-poredda-8025221b5/'
-              title="Visit Pascal Poredda's LinkedIn profile">
-              <LinkedinIcon className='h-5 w-5' />
-            </a>
-          </Button>
-          <Button
-            variant='outline'
-            size='icon'
-            className='rounded-full w-12 h-12'
-            asChild>
-            <a
-              href='https://x.com/pascal_poredda'
-              title="Visit Pascal Poredda's X.com profile">
-              <TwitterIcon className='h-5 w-5' />
-            </a>
-          </Button>
-          <Button
-            variant='outline'
-            size='icon'
-            className='rounded-full w-12 h-12'
-            asChild>
-            <a
-              href='https://youtube.com/@pascalporedda'
-              title="Subscribe to Pascal Poredda's YouTube channel">
-              <YoutubeIcon className='h-5 w-5' />
-            </a>
-          </Button>
-        </div>
-      </section>
+      </div>
     </div>
   );
 }

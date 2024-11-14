@@ -5,7 +5,9 @@ import Balancer from 'react-wrap-balancer';
 import { TypographyH1 } from '@/components/ui/typogrpahy/h1';
 import { getBlogPosts } from '@/app/db/blog';
 
-export async function generateMetadata(props: any): Promise<Metadata | undefined> {
+export async function generateMetadata(
+  props: any,
+): Promise<Metadata | undefined> {
   const params = await props.params;
   let post = getBlogPosts().find((post) => post.slug === params.slug);
 
@@ -58,10 +60,8 @@ export default async function BlogPage(props: any) {
     notFound();
   }
 
-  // const tweets = await getTweets(post.tweetIds);
-
   return (
-    <section>
+    <section className='max-w-2xl space-y-8'>
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{

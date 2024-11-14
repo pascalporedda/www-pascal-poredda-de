@@ -1,15 +1,16 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Navbar } from '@/components/page-header';
 import { cx } from 'class-variance-authority';
 
 import { GeistMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
+import { Navbar } from '@/components/navbar';
+import { Footer } from '@/components/footer';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://pascal-poredda.de'),
   title: {
-    default: 'Pascal Poredda',
+    default: 'Rust Freelancer | Pascal Poredda',
     template: '%s | Pascal Poredda',
   },
   authors: [
@@ -19,16 +20,19 @@ export const metadata: Metadata = {
     },
   ],
   keywords: [
+    'freelancer',
     'rust',
     'web development',
     'software engineering',
     'personal blog',
     'node js',
   ],
-  description: 'Developer, writer, creator.',
+  description:
+    'Building products for the web, solving problems one at a time. Rust Freelancer for hire.',
   openGraph: {
     title: 'Pascal Poredda',
-    description: 'Developer, writer, creator.',
+    description:
+      'Building products for the web, solving problems one at a time. Rust Freelancer for hire.',
     url: 'https://pascal-poredda.de',
     siteName: 'Pascal Poredda',
     locale: 'en_US',
@@ -60,9 +64,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang='en'
-      className={cx('bg-background', GeistSans.variable, GeistMono.variable)}>
+    <html lang='en' className={cx(GeistSans.variable, GeistMono.variable)}>
       <head>
         <script
           defer
@@ -70,11 +72,10 @@ export default function RootLayout({
           data-website-id='ab6cbd04-2296-4a7b-9a77-298217ccb457'
         />
       </head>
-      <body className='antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto'>
-        <main className='flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0'>
-          <Navbar />
-          {children}
-        </main>
+      <body className='min-h-screen bg-black text-white flex flex-col'>
+        <Navbar />
+        <main className='container mx-auto py-12 flex-1'>{children}</main>
+        <Footer />
       </body>
     </html>
   );
