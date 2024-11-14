@@ -148,28 +148,31 @@ export default function Home() {
         </div>
 
         <div>
-          <h2 className='text-2xl font-bold mb-6'>Latest Projects</h2>
+          <h2 className='text-2xl font-bold mb-6'>Latest Project</h2>
           <Card className='bg-zinc-900 border-zinc-800'>
             <CardContent className='p-0'>
               <Image
                 src='/self-hosting-image.jpg'
-                alt='Project preview'
+                alt='Notion CRM Exporter'
                 width={600}
                 height={400}
                 className='w-full object-cover rounded-t-lg'
               />
               <div className='p-6'>
                 <div className='flex items-center justify-between mb-2'>
-                  <h3 className='font-semibold'>Self-Hosted Analytics</h3>
+                  <h3 className='font-semibold'>Notion CRM Exporter</h3>
                   <div className='flex items-center gap-4 text-sm text-zinc-400'>
-                    <span>Rust</span>
+                    <span>NextJS</span>
                     <span>TypeScript</span>
                   </div>
                 </div>
                 <Button
+                  asChild
                   variant='link'
                   className='text-primary hover:text-primary/80 px-0'>
-                  View More Projects
+                  <Link href='https://notion-crm-export.com?via=pascal-poredda.de'>
+                    View Project
+                  </Link>
                 </Button>
               </div>
             </CardContent>
