@@ -92,7 +92,7 @@ export default async function BlogPage(props: any) {
         </div>
         <div className='h-[0.2em] bg-neutral-50 dark:bg-neutral-800 mx-2' />
       </div>
-      <article className='prose prose-quoteless prose-neutral dark:prose-invert'>
+      <article className='prose prose-quoteless prose-neutral dark:prose-invert text-wrap'>
         <MDX source={post.content} />
       </article>
     </section>

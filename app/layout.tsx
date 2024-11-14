@@ -72,9 +72,11 @@ export default function RootLayout({
           data-website-id='ab6cbd04-2296-4a7b-9a77-298217ccb457'
         />
       </head>
-      <body className='min-h-screen bg-black text-white flex flex-col'>
+      <body className='min-h-screen bg-black text-white flex flex-col px-2 md:px-4'>
         <Navbar />
-        <main className='container mx-auto py-12 flex-1'>{children}</main>
+        <main className='container mx-auto py-6 md:py-8 lg:py-12 flex-1'>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
