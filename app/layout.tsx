@@ -71,6 +71,7 @@ export default function RootLayout({
           src='https://analytics.poredda.digital/script.js'
           data-website-id='ab6cbd04-2296-4a7b-9a77-298217ccb457'
         />
+        <meta name='seobility' content='680ed20eacaa221c33d2c3afc5ccc433' />
       </head>
       <body className='min-h-screen bg-black text-white flex flex-col px-2 md:px-4'>
         <Navbar />
