@@ -16,9 +16,9 @@ export default function ImprintPage() {
         <TypographyP>
           Pascal Poredda
           <br />
-          Franz-Geuer-Straße 6
+          Wittekindstr. 30
           <br />
-          50672 Köln
+          45879 Gelsenkirchen
           <br />
           Germany
         </TypographyP>
@@ -40,9 +40,9 @@ export default function ImprintPage() {
         <TypographyP>
           Pascal Poredda
           <br />
-          Franz-Geuer-Straße 6
+          Wittekindstr. 30
           <br />
-          50672 Köln
+          45879 Gelsenkirchen
           <br />
           Germany
         </TypographyP>
